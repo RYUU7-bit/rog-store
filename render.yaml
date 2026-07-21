@@ -16,20 +16,6 @@ services:
         value: https://rog-store.onrender.com
       - key: LOG_LEVEL
         value: error
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: DATABASE_URL
-        fromDatabase:
-          name: rog-store-db
-          property: connectionString
-      - key: SESSION_DRIVER
-        value: file
-      - key: CACHE_STORE
-        value: file
-      - key: QUEUE_CONNECTION
-        value: sync
-      - key: FILESYSTEM_DISK
-        value: local
       - key: BAKONG_API_URL
         value: https://api-bakong.nbc.gov.kh
       - key: BAKONG_ACCOUNT_ID
@@ -40,9 +26,3 @@ services:
         sync: false
       - key: BAKONG_TOKEN
         sync: false
-
-databases:
-  - name: rog-store-db
-    plan: free
-    databaseName: rog_store
-    user: rog_store

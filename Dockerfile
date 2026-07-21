@@ -23,22 +23,7 @@ RUN apk add --no-cache \
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-install \
-    pdo \
-    pdo_pgsql \
-    pgsql \
-    gd \
-    zip \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    opcache
-
-# ── PHP opcache config ────────────────────────────────────────────────────────
-RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
- && echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
- && echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/opcache.ini \
- && echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/opcache.ini
+    pdo pdo_pgsql pgsql gd zip mbstring exif pcntl bcmath opcache
 
 # ── Composer ──────────────────────────────────────────────────────────────────
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -49,19 +34,24 @@ WORKDIR /var/www/html
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
-# ── PHP deps ──────────────────────────────────────────────────────────────────
+# ── PHP dependencies ──────────────────────────────────────────────────────────
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
 
-# ── Node deps + build assets ──────────────────────────────────────────────────
-COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+# ── Node dependencies ─────────────────────────────────────────────────────────
+COPY package.json package-lock.json vite.config.js ./
 
+# Copy ALL source files needed for the build
+COPY resources/ resources/
+COPY public/ public/
+
+# Run the asset build inside Docker
+RUN npm ci && npm run build && rm -rf node_modules
+
+# ── Copy remaining app files ──────────────────────────────────────────────────
 COPY . .
 
-RUN npm run build
-
-# ── Post-install scripts ──────────────────────────────────────────────────────
+# ── Post-install ──────────────────────────────────────────────────────────────
 RUN composer run-script post-autoload-dump 2>/dev/null || true
 
 # ── Permissions ───────────────────────────────────────────────────────────────
@@ -74,13 +64,12 @@ RUN mkdir -p \
  && chmod -R 775 storage bootstrap/cache \
  && chown -R www-data:www-data /var/www/html
 
-# ── Configs ───────────────────────────────────────────────────────────────────
-COPY docker/nginx.conf      /etc/nginx/http.d/default.conf
-COPY docker/php-fpm.conf    /usr/local/etc/php-fpm.d/www.conf
+# ── Config files ──────────────────────────────────────────────────────────────
+COPY docker/nginx.conf       /etc/nginx/http.d/default.conf
+COPY docker/php-fpm.conf     /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY docker/start.sh        /start.sh
+COPY docker/start.sh         /start.sh
 RUN chmod +x /start.sh
 
 EXPOSE 10000
-
 CMD ["/start.sh"]
