@@ -1,4 +1,5 @@
 #!/bin/sh
+# v2 - cache bust
 set -e
 
 cd /var/www/html

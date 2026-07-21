@@ -51,7 +51,7 @@ RUN mkdir -p \
  && chmod -R 775 storage bootstrap/cache \
  && chown -R www-data:www-data /var/www/html
 
-# ── Config files ──────────────────────────────────────────────────────────────
+# ── Config files (v2) ────────────────────────────────────────────────────────
 COPY docker/nginx.conf       /etc/nginx/http.d/default.conf
 COPY docker/php-fpm.conf     /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
