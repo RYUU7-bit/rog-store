@@ -4,6 +4,7 @@ set -e
 cd /var/www/html
 
 echo "==> DATABASE_URL present: $([ -n "$DATABASE_URL" ] && echo YES || echo NO)"
+echo "==> DATABASE_URL value: $DATABASE_URL"
 
 # ── Parse DATABASE_URL using Python (already installed) ──────────────────────
 if [ -n "$DATABASE_URL" ]; then
