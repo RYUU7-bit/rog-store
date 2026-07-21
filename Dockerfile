@@ -13,10 +13,9 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     freetype-dev \
     libzip-dev \
-    postgresql16-dev \
+    libpq-dev \
     oniguruma-dev \
-    supervisor \
-    shadow
+    supervisor
 
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
