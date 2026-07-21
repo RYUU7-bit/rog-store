@@ -12,7 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
     {{-- Vite Assets --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php
+        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+        $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app.css';
+        $jsFile  = $manifest['resources/js/app.js']['file']  ?? 'assets/app.js';
+    @endphp
+    <link rel="stylesheet" href="/build/{{ $cssFile }}">
+    <script type="module" src="/build/{{ $jsFile }}" defer></script>
 
     {{-- Theme: apply saved preference before paint to avoid flash --}}
     <script>

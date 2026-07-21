@@ -5,8 +5,6 @@ RUN apk add --no-cache \
     nginx \
     python3 \
     py3-pip \
-    nodejs \
-    npm \
     git \
     curl \
     zip \
@@ -38,17 +36,7 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
 
-# ── Node dependencies ─────────────────────────────────────────────────────────
-COPY package.json package-lock.json vite.config.js ./
-
-# Copy ALL source files needed for the build
-COPY resources/ resources/
-COPY public/ public/
-
-# Run the asset build inside Docker
-RUN npm ci && npm run build && rm -rf node_modules
-
-# ── Copy remaining app files ──────────────────────────────────────────────────
+# ── Copy all app files (including pre-built public/build) ────────────────────
 COPY . .
 
 # ── Post-install ──────────────────────────────────────────────────────────────
