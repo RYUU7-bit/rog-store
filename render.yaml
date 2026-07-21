@@ -4,6 +4,8 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     envVars:
+      - key: APP_NAME
+        value: "ROG Store"
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
@@ -12,6 +14,12 @@ services:
         generateValue: true
       - key: APP_URL
         value: https://rog-store.onrender.com
+      - key: APP_LOCALE
+        value: en
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: error
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_URL
@@ -19,13 +27,17 @@ services:
           name: rog-store-db
           property: connectionString
       - key: SESSION_DRIVER
-        value: database
+        value: file
+      - key: SESSION_LIFETIME
+        value: 120
       - key: CACHE_STORE
-        value: database
+        value: file
       - key: QUEUE_CONNECTION
-        value: database
+        value: sync
       - key: FILESYSTEM_DISK
-        value: public
+        value: local
+      - key: BROADCAST_CONNECTION
+        value: log
       - key: BAKONG_API_URL
         value: https://api-bakong.nbc.gov.kh
       - key: BAKONG_ACCOUNT_ID
