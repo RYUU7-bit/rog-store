@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: rog-store
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://rog-store.onrender.com
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        fromDatabase:
+          name: rog-store-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: FILESYSTEM_DISK
+        value: public
+      - key: BAKONG_API_URL
+        value: https://api-bakong.nbc.gov.kh
+      - key: BAKONG_ACCOUNT_ID
+        sync: false
+      - key: BAKONG_MERCHANT_NAME
+        sync: false
+      - key: BAKONG_MERCHANT_CITY
+        sync: false
+      - key: BAKONG_TOKEN
+        sync: false
+
+databases:
+  - name: rog-store-db
+    plan: free
+    databaseName: rog_store
+    user: rog_store
