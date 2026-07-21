@@ -3,54 +3,51 @@ set -e
 
 cd /var/www/html
 
-# ── 1. Create a minimal .env from environment variables ──────────────────────
+# ── 1. Write .env from environment variables (quote all values) ───────────────
 echo "==> Writing .env from environment..."
-cat > .env <<EOF
-APP_NAME="${APP_NAME:-ROG Store}"
-APP_ENV=${APP_ENV:-production}
-APP_KEY=${APP_KEY:-}
-APP_DEBUG=${APP_DEBUG:-false}
-APP_URL=${APP_URL:-http://localhost}
-APP_LOCALE=en
-APP_FALLBACK_LOCALE=en
+cat > .env << 'ENVEOF'
+APP_NAME="ROG Store"
+ENVEOF
 
-LOG_CHANNEL=stderr
-LOG_LEVEL=${LOG_LEVEL:-error}
+# Append dynamic values safely with printf
+printf 'APP_ENV=%s\n'          "${APP_ENV:-production}"          >> .env
+printf 'APP_KEY=%s\n'          "${APP_KEY:-}"                    >> .env
+printf 'APP_DEBUG=%s\n'        "${APP_DEBUG:-false}"             >> .env
+printf 'APP_URL=%s\n'          "${APP_URL:-http://localhost}"    >> .env
+printf 'APP_LOCALE=en\n'                                         >> .env
+printf 'APP_FALLBACK_LOCALE=en\n'                                >> .env
+printf 'LOG_CHANNEL=stderr\n'                                    >> .env
+printf 'LOG_LEVEL=%s\n'        "${LOG_LEVEL:-error}"             >> .env
+printf 'DB_CONNECTION=%s\n'    "${DB_CONNECTION:-pgsql}"         >> .env
+printf 'DATABASE_URL=%s\n'     "${DATABASE_URL:-}"               >> .env
+printf 'SESSION_DRIVER=file\n'                                   >> .env
+printf 'SESSION_LIFETIME=120\n'                                  >> .env
+printf 'CACHE_STORE=file\n'                                      >> .env
+printf 'QUEUE_CONNECTION=sync\n'                                 >> .env
+printf 'FILESYSTEM_DISK=local\n'                                 >> .env
+printf 'BROADCAST_CONNECTION=log\n'                              >> .env
+printf 'BAKONG_API_URL=%s\n'   "${BAKONG_API_URL:-https://api-bakong.nbc.gov.kh}" >> .env
+printf 'BAKONG_ACCOUNT_ID=%s\n'   "${BAKONG_ACCOUNT_ID:-}"      >> .env
+printf 'BAKONG_MERCHANT_NAME="%s"\n' "${BAKONG_MERCHANT_NAME:-}" >> .env
+printf 'BAKONG_MERCHANT_CITY="%s"\n' "${BAKONG_MERCHANT_CITY:-}" >> .env
+printf 'BAKONG_TOKEN=%s\n'     "${BAKONG_TOKEN:-}"               >> .env
 
-DB_CONNECTION=${DB_CONNECTION:-pgsql}
-DATABASE_URL=${DATABASE_URL:-}
-DB_URL=${DB_URL:-}
-
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-CACHE_STORE=file
-QUEUE_CONNECTION=sync
-FILESYSTEM_DISK=local
-BROADCAST_CONNECTION=log
-
-BAKONG_API_URL=${BAKONG_API_URL:-https://api-bakong.nbc.gov.kh}
-BAKONG_ACCOUNT_ID=${BAKONG_ACCOUNT_ID:-}
-BAKONG_MERCHANT_NAME=${BAKONG_MERCHANT_NAME:-}
-BAKONG_MERCHANT_CITY=${BAKONG_MERCHANT_CITY:-}
-BAKONG_TOKEN=${BAKONG_TOKEN:-}
-EOF
-
-# ── 2. Generate app key if not set ───────────────────────────────────────────
-echo "==> Checking APP_KEY..."
+# ── 2. Generate app key ───────────────────────────────────────────────────────
+echo "==> Generating APP_KEY..."
 php artisan key:generate --force --no-interaction
 
-# ── 3. Run migrations ────────────────────────────────────────────────────────
+# ── 3. Run migrations ─────────────────────────────────────────────────────────
 echo "==> Running migrations..."
 php artisan migrate --force --no-interaction
 
-# ── 4. Seed only if fresh ────────────────────────────────────────────────────
+# ── 4. Seed if fresh ──────────────────────────────────────────────────────────
 echo "==> Seeding database..."
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 
-# ── 5. Storage link ──────────────────────────────────────────────────────────
+# ── 5. Storage link ───────────────────────────────────────────────────────────
 php artisan storage:link --force 2>/dev/null || true
 
-# ── 6. Cache everything ───────────────────────────────────────────────────────
+# ── 6. Cache ──────────────────────────────────────────────────────────────────
 echo "==> Caching..."
 php artisan optimize:clear
 php artisan config:cache
