@@ -1,79 +1,58 @@
 #!/bin/sh
-# v2 - cache bust
 set -e
-
 cd /var/www/html
 
-echo "==> Setting up environment..." >&2
+# Use PHP to write the .env — avoids all shell quoting/redirect issues
+php -r "
+\$db = '';
+\$url = getenv('DATABASE_URL');
+if (\$url) {
+    \$u = parse_url(\$url);
+    \$db = 'DB_CONNECTION=pgsql' . PHP_EOL
+        . 'DB_HOST=' . (\$u['host'] ?? '') . PHP_EOL
+        . 'DB_PORT=' . (\$u['port'] ?? 5432) . PHP_EOL
+        . 'DB_DATABASE=' . ltrim(\$u['path'] ?? 'laravel', '/') . PHP_EOL
+        . 'DB_USERNAME=' . (\$u['user'] ?? '') . PHP_EOL
+        . 'DB_PASSWORD=' . (\$u['pass'] ?? '') . PHP_EOL
+        . 'DB_SSLMODE=require' . PHP_EOL;
+} else {
+    touch('/var/www/html/database/database.sqlite');
+    \$db = 'DB_CONNECTION=sqlite' . PHP_EOL
+        . 'DB_DATABASE=/var/www/html/database/database.sqlite' . PHP_EOL;
+}
 
-# Parse DATABASE_URL with Python — output ONLY key=value lines, nothing else
-if [ -n "$DATABASE_URL" ]; then
-    echo "==> PostgreSQL mode" >&2
-    DB_VARS=$(python3 -c "
-import os, urllib.parse
-url = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql://', 1)
-p = urllib.parse.urlparse(url)
-print('DB_CONNECTION=pgsql')
-print('DB_HOST=' + (p.hostname or ''))
-print('DB_PORT=' + str(p.port or 5432))
-print('DB_DATABASE=' + p.path.lstrip('/'))
-print('DB_USERNAME=' + (p.username or ''))
-print('DB_PASSWORD=' + (p.password or ''))
-print('DB_SSLMODE=require')
-")
-else
-    echo "==> SQLite mode" >&2
-    DB_VARS="DB_CONNECTION=sqlite
-DB_DATABASE=/var/www/html/database/database.sqlite"
-    touch /var/www/html/database/database.sqlite
-    chmod 664 /var/www/html/database/database.sqlite
-fi
+\$env = 'APP_NAME=\"ROG Store\"' . PHP_EOL
+    . 'APP_ENV=production' . PHP_EOL
+    . 'APP_KEY=' . getenv('APP_KEY') . PHP_EOL
+    . 'APP_DEBUG=false' . PHP_EOL
+    . 'APP_URL=' . (getenv('APP_URL') ?: 'https://rog-store.onrender.com') . PHP_EOL
+    . 'APP_LOCALE=en' . PHP_EOL
+    . 'LOG_CHANNEL=stderr' . PHP_EOL
+    . 'LOG_LEVEL=error' . PHP_EOL
+    . \$db
+    . 'SESSION_DRIVER=file' . PHP_EOL
+    . 'SESSION_LIFETIME=120' . PHP_EOL
+    . 'CACHE_STORE=file' . PHP_EOL
+    . 'QUEUE_CONNECTION=sync' . PHP_EOL
+    . 'FILESYSTEM_DISK=local' . PHP_EOL
+    . 'BROADCAST_CONNECTION=log' . PHP_EOL
+    . 'BAKONG_API_URL=' . (getenv('BAKONG_API_URL') ?: 'https://api-bakong.nbc.gov.kh') . PHP_EOL
+    . 'BAKONG_ACCOUNT_ID=' . getenv('BAKONG_ACCOUNT_ID') . PHP_EOL
+    . 'BAKONG_MERCHANT_NAME=\"' . getenv('BAKONG_MERCHANT_NAME') . '\"' . PHP_EOL
+    . 'BAKONG_MERCHANT_CITY=\"' . getenv('BAKONG_MERCHANT_CITY') . '\"' . PHP_EOL
+    . 'BAKONG_TOKEN=' . getenv('BAKONG_TOKEN') . PHP_EOL;
 
-# Write .env — only valid KEY=VALUE lines go here
-{
-printf 'APP_NAME="ROG Store"\n'
-printf 'APP_ENV=production\n'
-printf 'APP_KEY=%s\n'            "${APP_KEY:-}"
-printf 'APP_DEBUG=false\n'
-printf 'APP_URL=%s\n'            "${APP_URL:-https://rog-store.onrender.com}"
-printf 'APP_LOCALE=en\n'
-printf 'LOG_CHANNEL=stderr\n'
-printf 'LOG_LEVEL=error\n'
-printf '%s\n'                    "$DB_VARS"
-printf 'SESSION_DRIVER=file\n'
-printf 'SESSION_LIFETIME=120\n'
-printf 'CACHE_STORE=file\n'
-printf 'QUEUE_CONNECTION=sync\n'
-printf 'FILESYSTEM_DISK=local\n'
-printf 'BROADCAST_CONNECTION=log\n'
-printf 'BAKONG_API_URL=%s\n'         "${BAKONG_API_URL:-https://api-bakong.nbc.gov.kh}"
-printf 'BAKONG_ACCOUNT_ID=%s\n'      "${BAKONG_ACCOUNT_ID:-}"
-printf 'BAKONG_MERCHANT_NAME="%s"\n' "${BAKONG_MERCHANT_NAME:-}"
-printf 'BAKONG_MERCHANT_CITY="%s"\n' "${BAKONG_MERCHANT_CITY:-}"
-printf 'BAKONG_TOKEN=%s\n'           "${BAKONG_TOKEN:-}"
-} > .env
+file_put_contents('/var/www/html/.env', \$env);
+echo 'DB: ' . (getenv('DATABASE_URL') ? 'PostgreSQL' : 'SQLite') . PHP_EOL;
+"
 
-echo "==> DB: $(grep DB_CONNECTION .env)" >&2
-
-# Generate app key
 php artisan key:generate --force --no-interaction
-
-# Migrations
-echo "==> Migrating..." >&2
 php artisan migrate --force --no-interaction
-
-# Seed
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
-
-# Storage
 php artisan storage:link --force 2>/dev/null || true
-
-# Cache
-echo "==> Caching..." >&2
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "==> Starting services..." >&2
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
