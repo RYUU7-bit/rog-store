@@ -11,14 +11,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
-    {{-- Vite Assets --}}
+    {{-- Assets --}}
     @php
-        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-        $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app.css';
-        $jsFile  = $manifest['resources/js/app.js']['file']  ?? 'assets/app.js';
+        $manifestPath = public_path('build/manifest.json');
+        $cssFile = 'assets/app-DPvlILMc.css';
+        $jsFile  = 'assets/app-Cp0MBnBs.js';
+        if (file_exists($manifestPath)) {
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            $cssFile  = $manifest['resources/css/app.css']['file'] ?? $cssFile;
+            $jsFile   = $manifest['resources/js/app.js']['file']  ?? $jsFile;
+        }
     @endphp
-    <link rel="stylesheet" href="/build/{{ $cssFile }}">
-    <script type="module" src="/build/{{ $jsFile }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}?v={{ filemtime(public_path('build/' . $cssFile)) }}">
+    <script type="module" src="{{ asset('build/' . $jsFile) }}" defer></script>
 
     {{-- Theme: apply saved preference before paint to avoid flash --}}
     <script>
