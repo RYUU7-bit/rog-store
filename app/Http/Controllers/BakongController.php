@@ -156,20 +156,36 @@ class BakongController extends Controller
     {
         $request->validate(['md5' => 'required|string']);
 
+        $md5        = $request->md5;
+        $scriptPath = base_path('scripts/bakong_generate.py');
+
+        // Use Python bakong-khqr to check payment
+        $params  = json_encode(['token' => config('services.bakong.token'), 'md5' => $md5, 'action' => 'check']);
+        $tmpFile = tempnam(sys_get_temp_dir(), 'bakong_chk_') . '.json';
+        file_put_contents($tmpFile, $params);
+
+        $output = shell_exec("python \"" . $scriptPath . "\" --file \"" . $tmpFile . "\" 2>&1");
+        @unlink($tmpFile);
+
+        if ($output) {
+            $data = json_decode(trim($output), true);
+            if (!empty($data['paid'])) {
+                return response()->json(['success' => true, 'paid' => true]);
+            }
+        }
+
+        // Fallback: try Bakong API directly
         try {
             $response = Http::withToken(config('services.bakong.token'))
-                ->timeout(10)
-                ->post(config('services.bakong.api_url') . '/v1/individual/check-transaction', [
-                    'md5' => $request->md5,
+                ->timeout(8)
+                ->post(config('services.bakong.api_url') . '/v1/individual/checkTransactionByMD5', [
+                    'md5' => $md5,
                 ]);
 
             if ($response->successful()) {
                 $body = $response->json();
-                return response()->json([
-                    'success' => true,
-                    'paid'    => ($body['responseCode'] ?? -1) === 0,
-                    'data'    => $body['data'] ?? null,
-                ]);
+                $paid = ($body['responseCode'] ?? -1) === 0;
+                return response()->json(['success' => true, 'paid' => $paid, 'data' => $body['data'] ?? null]);
             }
         } catch (\Exception $e) {
             Log::info('Bakong check error: ' . $e->getMessage());

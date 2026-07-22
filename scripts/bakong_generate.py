@@ -33,13 +33,28 @@ def main():
         from bakong_khqr import KHQR
 
         token        = params.get("token", "")
-        account_id   = params.get("account_id", "")
-        merchant_name= params.get("merchant_name", "")
-        merchant_city= params.get("merchant_city", "Phnom Penh")
-        amount       = float(params.get("amount", 0))
-        currency     = params.get("currency", "USD")
-        bill_number  = params.get("bill_number", "")
-        store_label  = params.get("store_label", "ROG Store")
+        action       = params.get("action", "generate")
+        khqr         = KHQR(token)
+
+        # ── Check payment ─────────────────────────────────────────────────────
+        if action == "check":
+            md5    = params.get("md5", "")
+            status = khqr.check_payment(md5)
+            print(json.dumps({
+                "success": True,
+                "paid":    status == "PAID",
+                "status":  status,
+            }))
+            return
+
+        # ── Generate QR ───────────────────────────────────────────────────────
+        account_id    = params.get("account_id", "")
+        merchant_name = params.get("merchant_name", "")
+        merchant_city = params.get("merchant_city", "Phnom Penh")
+        amount        = float(params.get("amount", 0))
+        currency      = params.get("currency", "USD")
+        bill_number   = params.get("bill_number", "")
+        store_label   = params.get("store_label", "ROG Store")
         terminal_label = params.get("terminal_label", "online")
 
         khqr = KHQR(token)

@@ -2,9 +2,8 @@
 set -e
 cd /var/www/html
 
-# Use PHP to write the .env — avoids all shell quoting/redirect issues
+# Write .env using PHP — reliable, no shell quoting issues
 php -r "
-\$db = '';
 \$url = getenv('DATABASE_URL');
 if (\$url) {
     \$u = parse_url(\$url);
@@ -20,11 +19,10 @@ if (\$url) {
     \$db = 'DB_CONNECTION=sqlite' . PHP_EOL
         . 'DB_DATABASE=/var/www/html/database/database.sqlite' . PHP_EOL;
 }
-
 \$env = 'APP_NAME=\"ROG Store\"' . PHP_EOL
     . 'APP_ENV=production' . PHP_EOL
     . 'APP_KEY=' . getenv('APP_KEY') . PHP_EOL
-    . 'APP_DEBUG=false' . PHP_EOL
+    . 'APP_DEBUG=true' . PHP_EOL
     . 'APP_URL=' . (getenv('APP_URL') ?: 'https://rog-store.onrender.com') . PHP_EOL
     . 'APP_LOCALE=en' . PHP_EOL
     . 'LOG_CHANNEL=stderr' . PHP_EOL
@@ -41,18 +39,16 @@ if (\$url) {
     . 'BAKONG_MERCHANT_NAME=\"' . getenv('BAKONG_MERCHANT_NAME') . '\"' . PHP_EOL
     . 'BAKONG_MERCHANT_CITY=\"' . getenv('BAKONG_MERCHANT_CITY') . '\"' . PHP_EOL
     . 'BAKONG_TOKEN=' . getenv('BAKONG_TOKEN') . PHP_EOL;
-
 file_put_contents('/var/www/html/.env', \$env);
-echo 'DB: ' . (getenv('DATABASE_URL') ? 'PostgreSQL' : 'SQLite') . PHP_EOL;
+echo 'DB mode: ' . (getenv('DATABASE_URL') ? 'PostgreSQL' : 'SQLite') . PHP_EOL;
 "
 
 php artisan key:generate --force --no-interaction
 php artisan migrate --force --no-interaction
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 php artisan storage:link --force 2>/dev/null || true
+
+# Clear any stale cache — do NOT re-cache in production on free tier
 php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
 
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
