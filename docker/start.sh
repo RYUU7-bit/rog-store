@@ -44,7 +44,9 @@ $env = "APP_NAME=\"ROG Store\"\n"
      . "BAKONG_ACCOUNT_ID=" . (getenv('BAKONG_ACCOUNT_ID') ?: '') . "\n"
      . "BAKONG_MERCHANT_NAME=\"$bName\"\n"
      . "BAKONG_MERCHANT_CITY=\"$bCity\"\n"
-     . "BAKONG_TOKEN=" . (getenv('BAKONG_TOKEN') ?: '') . "\n";
+     . "BAKONG_TOKEN=" . (getenv('BAKONG_TOKEN') ?: '') . "\n"
+     . "TELEGRAM_BOT_TOKEN=" . (getenv('TELEGRAM_BOT_TOKEN') ?: '') . "\n"
+     . "TELEGRAM_CHAT_ID=" . (getenv('TELEGRAM_CHAT_ID') ?: '') . "\n";
 
 file_put_contents('/var/www/html/.env', $env);
 echo "ENV written. DB=" . (getenv('DATABASE_URL') ? 'pgsql' : 'sqlite') . "\n";

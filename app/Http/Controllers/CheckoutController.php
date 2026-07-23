@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\TelegramService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -87,6 +88,13 @@ class CheckoutController extends Controller
         }
 
         Cart::where('session_id', $sessionId)->delete();
+
+        // Send Telegram notification
+        try {
+            (new TelegramService())->notifyNewOrder($order->load('items'));
+        } catch (\Exception $e) {
+            // Never fail the order because of notification issues
+        }
 
         return redirect()->route('checkout.success', $order->order_number);
     }
