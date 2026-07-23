@@ -64,14 +64,16 @@
                         <div>
                             <label class="rog-label">Country</label>
                             <select name="country" class="rog-input">
-                                <option value="US" selected>United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="GB">United Kingdom</option>
-                                <option value="AU">Australia</option>
-                                <option value="DE">Germany</option>
-                                <option value="FR">France</option>
-                                <option value="MY">Malaysia</option>
-                                <option value="SG">Singapore</option>
+                                @php $selectedCountry = old('country', 'KH'); @endphp
+                                <option value="KH" {{ $selectedCountry === 'KH' ? 'selected' : '' }}>Cambodia</option>
+                                <option value="US" {{ $selectedCountry === 'US' ? 'selected' : '' }}>United States</option>
+                                <option value="CA" {{ $selectedCountry === 'CA' ? 'selected' : '' }}>Canada</option>
+                                <option value="GB" {{ $selectedCountry === 'GB' ? 'selected' : '' }}>United Kingdom</option>
+                                <option value="AU" {{ $selectedCountry === 'AU' ? 'selected' : '' }}>Australia</option>
+                                <option value="DE" {{ $selectedCountry === 'DE' ? 'selected' : '' }}>Germany</option>
+                                <option value="FR" {{ $selectedCountry === 'FR' ? 'selected' : '' }}>France</option>
+                                <option value="MY" {{ $selectedCountry === 'MY' ? 'selected' : '' }}>Malaysia</option>
+                                <option value="SG" {{ $selectedCountry === 'SG' ? 'selected' : '' }}>Singapore</option>
                             </select>
                         </div>
                     </div>

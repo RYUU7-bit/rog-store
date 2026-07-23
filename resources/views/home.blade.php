@@ -95,48 +95,6 @@
     </div>
 </section>
 
-{{-- ═══ STATS STRIP ══════════════════════════════════════════════════════════ --}}
-<div style="background:#111; border-bottom:1px solid #1e1e1e;">
-    <div style="max-width:1280px; margin:0 auto; padding:1.4rem 1.5rem; display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; text-align:center;">
-        @foreach([
-            ['🚀','Free Shipping','On orders over $500'],
-            ['🔒','Secure Payment','100% safe & encrypted'],
-            ['🏆','Genuine ROG','Official ASUS products'],
-            ['🔧','2-Year Warranty','Full manufacturer warranty'],
-        ] as [$icon,$title,$sub])
-        <div style="display:flex; align-items:center; gap:.8rem; justify-content:center;">
-            <span style="font-size:1.6rem;">{{ $icon }}</span>
-            <div style="text-align:left;">
-                <div style="font-weight:700; font-size:.9rem; color:#fff;">{{ $title }}</div>
-                <div style="font-size:.75rem; color:#666;">{{ $sub }}</div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-</div>
-
-{{-- ═══ CATEGORIES ═══════════════════════════════════════════════════════════ --}}
-<section style="max-width:1280px; margin:0 auto; padding:4rem 1.5rem;">
-    <div style="text-align:center; margin-bottom:2.5rem;">
-        <h2 class="section-title" style="margin:0 auto;">Shop by Category</h2>
-        <p style="color:#666; margin-top:.8rem; font-size:.95rem;">Find exactly what you need for your ultimate gaming setup</p>
-    </div>
-    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:1rem;">
-        @php
-        $catIcons = ['gaming-laptops'=>'💻','gaming-monitors'=>'🖥️','gaming-keyboards'=>'⌨️','gaming-mice'=>'🖱️','gaming-headsets'=>'🎧','graphics-cards'=>'🎮','motherboards'=>'🔌','gaming-chairs'=>'🪑'];
-        @endphp
-        @foreach($categories as $cat)
-        <a href="{{ route('shop', ['category'=>$cat->slug]) }}" style="text-decoration:none;">
-            <div class="cat-card">
-                <div class="cat-icon">{{ $catIcons[$cat->slug] ?? '🎮' }}</div>
-                <div style="font-weight:700; font-size:.85rem; color:#ddd; margin-bottom:.3rem;">{{ $cat->name }}</div>
-                <div style="font-size:.73rem; color:#666;">{{ $cat->active_products_count ?? 0 }} Products</div>
-            </div>
-        </a>
-        @endforeach
-    </div>
-</section>
-
 {{-- ═══ FEATURED PRODUCTS ═══════════════════════════════════════════════════ --}}
 <section style="background:#0d0d0d; padding:4rem 0; border-top:1px solid #1a1a1a; border-bottom:1px solid #1a1a1a;">
     <div style="max-width:1280px; margin:0 auto; padding:0 1.5rem;">

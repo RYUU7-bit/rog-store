@@ -37,6 +37,7 @@ class CheckoutController extends Controller
             'address' => 'required|string',
             'city' => 'required|string|max:100',
             'zip_code' => 'required|string|max:20',
+            'country' => 'nullable|string|max:10',
             'payment_method' => 'required|in:credit_card,paypal,bank_transfer,bakong_khqr',
         ]);
 
@@ -69,7 +70,7 @@ class CheckoutController extends Controller
             'city'           => $request->city,
             'state'          => $request->state,
             'zip_code'       => $request->zip_code,
-            'country'        => $request->get('country', 'US'),
+            'country'        => $request->get('country', 'KH'),
             'notes'          => $request->notes,
         ]);
 
