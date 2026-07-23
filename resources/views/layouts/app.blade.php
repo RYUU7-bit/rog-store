@@ -12,19 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
     {{-- Assets --}}
-    @php
-        $manifestPath = public_path('build/manifest.json');
-        if (file_exists($manifestPath)) {
-            $manifest = json_decode(file_get_contents($manifestPath), true);
-            $cssFile = $manifest['resources/css/app.css']['file'] ?? 'assets/app-Bj3S1EWV.css';
-            $jsFile = $manifest['resources/js/app.js']['file'] ?? 'assets/app-Cp0MBnBs.js';
-        } else {
-            $cssFile = 'assets/app-Bj3S1EWV.css';
-            $jsFile = 'assets/app-Cp0MBnBs.js';
-        }
-    @endphp
-    <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
-    <script type="module" src="{{ asset('build/' . $jsFile) }}" defer></script>
+    <link rel="stylesheet" href="/build/assets/app-Bj3S1EWV.css">
+    <script type="module" src="/build/assets/app-Cp0MBnBs.js" defer></script>
 
     {{-- Theme: apply saved preference before paint to avoid flash --}}
     <script>
