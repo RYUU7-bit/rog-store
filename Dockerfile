@@ -15,7 +15,9 @@ RUN apk add --no-cache \
     libzip-dev \
     libpq-dev \
     oniguruma-dev \
-    supervisor
+    supervisor \
+    nodejs \
+    npm
 
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -35,8 +37,12 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
 
-# ── Copy all app files (including pre-built public/build) ────────────────────
+# ── Copy app files (except node_modules and public/build) ────────────────────
 COPY . .
+
+# ── Build frontend assets ─────────────────────────────────────────────────────
+RUN npm install --ignore-scripts
+RUN npm run build
 
 # ── Post-install ──────────────────────────────────────────────────────────────
 RUN composer run-script post-autoload-dump 2>/dev/null || true
