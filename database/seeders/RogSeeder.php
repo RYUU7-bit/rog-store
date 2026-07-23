@@ -149,7 +149,7 @@ class RogSeeder extends Seeder
                 'slug'        => 'rog-harpe-ace-aim-lab',
                 'sku'         => 'ROG-HARPE-ACE',
                 'price'       => 109.99,
-                'sale_price'  => 89.99,
+                'sale_price'  => 0.10,
                 'stock'       => 60,
                 'is_featured' => true,
                 'short_description' => '54g ultra-lightweight wireless esports mouse',
