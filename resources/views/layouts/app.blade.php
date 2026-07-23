@@ -12,7 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
     {{-- Assets --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('build/assets/app-Bj3S1EWV.css') }}">
+    <script type="module" src="{{ asset('build/assets/app-Cp0MBnBs.js') }}" defer></script>
 
     {{-- Theme: apply saved preference before paint to avoid flash --}}
     <script>
