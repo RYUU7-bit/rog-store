@@ -374,6 +374,87 @@ footer { background: #080808; border-top: 1px solid #1e1e1e; }
   border-top: 1px solid var(--border-base);
 }
 
+/* ─── Mobile Responsive ───────────────────────────── */
+@media (max-width: 768px) {
+  /* Hero slideshow */
+  .slideshow-wrap { height: 400px; }
+  .slide-content {
+    left: 5%;
+    max-width: 90%;
+    top: 55%;
+    transform: translateY(-50%);
+  }
+  .slide-content h1 { font-size: 1.5rem; }
+  .slide-content p { font-size: 0.9rem; }
+  .slide-nav-btn { width: 36px; height: 36px; }
+  
+  /* Section titles */
+  .section-title { font-size: 1.5rem; }
+  
+  /* Product cards */
+  .product-card img { height: 180px; }
+  .price-current { font-size: 1.1rem; }
+  
+  /* Category cards */
+  .cat-card { padding: 1.5rem 0.8rem; }
+  .cat-icon { font-size: 2rem; }
+  
+  /* Buttons */
+  .btn-rog, .btn-rog-outline { padding: 0.5rem 1.2rem; font-size: 0.85rem; }
+  
+  /* Navbar */
+  .nav-link { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+  
+  /* Footer */
+  footer > div > div:first-child {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+  }
+  
+  /* AI Assistant */
+  #rog-ai-panel {
+    width: calc(100% - 2rem);
+    right: 1rem;
+    bottom: 85px;
+    max-height: 70vh;
+  }
+  #rog-ai-btn { bottom: 20px; right: 20px; }
+  .rog-robot-icon { width: 56px; height: 56px; }
+}
+
+@media (max-width: 480px) {
+  /* Hero slideshow */
+  .slideshow-wrap { height: 320px; }
+  .slide-content h1 { font-size: 1.3rem; }
+  .slide-content p { font-size: 0.85rem; }
+  .slide-content { max-width: 95%; }
+  
+  /* Product grid */
+  .product-card img { height: 160px; }
+  
+  /* Touch-friendly buttons */
+  .btn-rog, .btn-rog-outline { 
+    padding: 0.6rem 1.4rem; 
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+  
+  /* Larger touch targets */
+  .cart-icon-link { padding: 0.6rem; }
+  #mobile-toggle { padding: 0.6rem; }
+  
+  /* Mobile menu */
+  #mobile-menu { padding: 1rem; }
+  #mobile-menu .nav-link { 
+    font-size: 1rem; 
+    padding: 0.8rem 0; 
+  }
+  
+  /* AI Assistant */
+  #rog-ai-panel { width: calc(100% - 1rem); right: 0.5rem; }
+  .rog-ai-suggest-card { padding: 0.8rem; }
+}
+
 /* ─── Marquee strip ────────────────────────────────── */
 .marquee-wrap { overflow: hidden; background: var(--rog-red); }
 .marquee-inner {
