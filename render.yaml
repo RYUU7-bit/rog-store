@@ -16,6 +16,15 @@ services:
         value: https://rog-store.onrender.com
       - key: LOG_LEVEL
         value: error
+      # Sessions stored in DB so they survive container restarts / new instances
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_LIFETIME
+        value: "120"
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: CACHE_STORE
+        value: database
       - key: BAKONG_API_URL
         value: https://api-bakong.nbc.gov.kh
       - key: BAKONG_ACCOUNT_ID

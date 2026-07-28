@@ -22,21 +22,23 @@ if ($url) {
 
 $key    = getenv('APP_KEY') ?: '';
 $appUrl = getenv('APP_URL') ?: 'https://rog-store.onrender.com';
+$debug  = getenv('APP_DEBUG') ?: 'false';
 $bName  = getenv('BAKONG_MERCHANT_NAME') ?: '';
 $bCity  = getenv('BAKONG_MERCHANT_CITY') ?: '';
 
 $env = "APP_NAME=\"ROG Store\"\n"
      . "APP_ENV=production\n"
      . "APP_KEY=$key\n"
-     . "APP_DEBUG=true\n"
+     . "APP_DEBUG=$debug\n"
      . "APP_URL=$appUrl\n"
      . "APP_LOCALE=en\n"
      . "LOG_CHANNEL=stderr\n"
      . "LOG_LEVEL=error\n"
      . $db
-     . "SESSION_DRIVER=file\n"
+     . "SESSION_DRIVER=database\n"
      . "SESSION_LIFETIME=120\n"
-     . "CACHE_STORE=file\n"
+     . "SESSION_SECURE_COOKIE=true\n"
+     . "CACHE_STORE=database\n"
      . "QUEUE_CONNECTION=sync\n"
      . "FILESYSTEM_DISK=local\n"
      . "BROADCAST_CONNECTION=log\n"
@@ -52,7 +54,8 @@ file_put_contents('/var/www/html/.env', $env);
 echo "ENV written. DB=" . (getenv('DATABASE_URL') ? 'pgsql' : 'sqlite') . "\n";
 PHPEOF
 
-php artisan key:generate --force --no-interaction
+# Only generate an APP_KEY if one was not injected via environment (Render provides it via generateValue)
+php -r "if (!getenv('APP_KEY')) { passthru('php artisan key:generate --force --no-interaction'); } else { echo 'APP_KEY already provided, skipping key:generate' . PHP_EOL; }"
 php artisan migrate --force --no-interaction
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 php artisan storage:link --force 2>/dev/null || true
