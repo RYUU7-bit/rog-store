@@ -54,15 +54,16 @@ class CheckoutController extends Controller
         $shipping = 0;
         $total = $subtotal + $tax;
 
+        // Create order FIRST — order number becomes QR ref for BAKONG
         $order = Order::create([
             'order_number'   => Order::generateOrderNumber(),
-            'status'         => 'confirmed',
+            'status'         => 'pending',
             'subtotal'       => $subtotal,
             'tax'            => $tax,
             'shipping'       => $shipping,
             'total'          => $total,
             'payment_method' => $request->payment_method,
-            'payment_status' => 'paid',
+            'payment_status' => 'pending',
             'first_name'     => $request->first_name,
             'last_name'      => $request->last_name,
             'email'          => $request->email,
@@ -75,6 +76,7 @@ class CheckoutController extends Controller
             'notes'          => $request->notes,
         ]);
 
+        // Create order items
         foreach ($cartItems as $item) {
             $price = $item->product->sale_price ?? $item->product->price;
             OrderItem::create([
@@ -87,16 +89,58 @@ class CheckoutController extends Controller
             ]);
         }
 
+        // ══ If BAKONG KHQR, return JSON with order data → client opens modal ══════
+        if ($request->payment_method === 'bakong_khqr') {
+            return response()->json([
+                'success'      => true,
+                'show_bakong'  => true,
+                'order_number' => $order->order_number,
+                'amount'       => (float) number_format($total, 2, '.', ''),
+            ]);
+        }
+
+        // ══ For other methods, mark paid immediately (demo mode) ═════════════════
+        $order->update(['payment_status' => 'paid', 'status' => 'confirmed']);
         Cart::where('session_id', $sessionId)->delete();
 
         // Send Telegram notification
         try {
             (new TelegramService())->notifyNewOrder($order->load('items'));
         } catch (\Exception $e) {
-            // Never fail the order because of notification issues
+            // Never fail order due to notification issues
         }
 
         return redirect()->route('checkout.success', $order->order_number);
+    }
+
+    /**
+     * Confirm Bakong payment (called by modal after user confirms).
+     */
+    public function confirmBakong(Request $request)
+    {
+        $request->validate(['order_number' => 'required|string']);
+
+        $order = Order::where('order_number', $request->order_number)->firstOrFail();
+
+        if ($order->payment_status === 'paid') {
+            return response()->json(['success' => true, 'already_paid' => true]);
+        }
+
+        // Mark paid
+        $order->update(['payment_status' => 'paid', 'status' => 'confirmed']);
+
+        // Clear cart
+        $sessionId = $this->getSessionId();
+        Cart::where('session_id', $sessionId)->delete();
+
+        // Telegram
+        try {
+            (new TelegramService())->notifyNewOrder($order->load('items'));
+        } catch (\Exception $e) {
+            // Silent fail
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function success(string $orderNumber)

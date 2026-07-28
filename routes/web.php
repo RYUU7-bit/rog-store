@@ -28,6 +28,7 @@ Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 // Checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::post('/checkout/confirm-bakong', [CheckoutController::class, 'confirmBakong'])->name('checkout.confirm_bakong');
 Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // BAKONG KHQR Payment
