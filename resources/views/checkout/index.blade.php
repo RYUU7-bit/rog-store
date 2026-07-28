@@ -278,13 +278,14 @@
             {{-- Footer buttons --}}
             <div id="bakong-footer-btns" style="padding:.8rem 1.1rem 1rem; border-top:1px solid #f5f5f5; display:flex; gap:.6rem;">
                 <button id="bakong-cancel-btn"
-                    style="flex:1; padding:.72rem .5rem; background:#f7f7f7; border:1.5px solid #eee; color:#888; border-radius:10px; cursor:pointer; font-weight:700; font-size:.8rem; transition:all .15s;"
-                    onmouseover="this.style.background='#eee'" onmouseout="this.style.background='#f7f7f7'">
+                    style="flex:1; padding:.78rem .5rem; background:transparent; border:1.5px solid #ddd; color:#888; cursor:pointer; font-weight:700; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; transition:all .15s;"
+                    onmouseover="this.style.borderColor='#bbb';this.style.color='#555'" onmouseout="this.style.borderColor='#ddd';this.style.color='#888'">
                     Cancel
                 </button>
                 <button id="bakong-paid-btn"
-                    style="flex:2.5; padding:.72rem .5rem; background:#cc0018; border:none; color:#fff; border-radius:10px; cursor:pointer; font-weight:900; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:.4rem; box-shadow:0 4px 14px rgba(204,0,24,.3); transition:background .15s;"
-                    onmouseover="this.style.background='#a8001a'" onmouseout="this.style.background='#cc0018'">
+                    style="flex:2.5; padding:.78rem .5rem; background:#cc0018; border:none; color:#fff; cursor:pointer; font-weight:900; font-size:.85rem; letter-spacing:.1em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:.45rem; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); box-shadow:0 4px 18px rgba(204,0,24,.35); transition:background .2s, box-shadow .2s;"
+                    onmouseover="this.style.background='#a8001a';this.style.boxShadow='0 6px 24px rgba(204,0,24,.55)'"
+                    onmouseout="this.style.background='#cc0018';this.style.boxShadow='0 4px 18px rgba(204,0,24,.35)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     I've Paid
                 </button>
