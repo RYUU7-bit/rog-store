@@ -66,7 +66,7 @@ PHPEOF
 php -r "if (!getenv('APP_KEY')) { passthru('php artisan key:generate --force --no-interaction'); } else { echo 'APP_KEY already set, skipping.' . PHP_EOL; }"
 
 # ── Run migrations and seed ───────────────────────────────────────────────────
-php artisan migrate --force --no-interaction
+php artisan migrate --force --no-interaction || { echo "Migration failed, attempting to continue..."; }
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 php artisan storage:link --force 2>/dev/null || true
 php artisan optimize:clear
