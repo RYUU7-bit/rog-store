@@ -124,7 +124,9 @@
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn-rog" style="width:100%; justify-content:center; font-size:.78rem; padding:.5rem;" {{ $product->stock == 0 ? 'disabled style=opacity:.4;cursor:not-allowed' : '' }}>
+                        <button type="submit" class="btn-rog" 
+                                style="width:100%; justify-content:center; font-size:.78rem; padding:.5rem; {{ $product->stock == 0 ? 'opacity:.4; cursor:not-allowed;' : '' }}"
+                                {{ $product->stock == 0 ? 'disabled' : '' }}>
                             {{ $product->stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
                         </button>
                     </form>

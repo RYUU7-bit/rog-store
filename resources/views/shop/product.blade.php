@@ -133,11 +133,18 @@
                         <span class="price-current">${{ number_format($rel->price,2) }}</span>
                         @endif
                     </div>
+                    <div style="font-size:.75rem; color:{{ $rel->stock > 5 ? '#22c55e' : ($rel->stock > 0 ? '#f59e0b' : '#ef4444') }}; margin-bottom:.8rem;">
+                        {{ $rel->stock > 5 ? '● In Stock' : ($rel->stock > 0 ? '● Low Stock ('.$rel->stock.')' : '● Out of Stock') }}
+                    </div>
                     <form action="{{ route('cart.add') }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $rel->id }}">
                         <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn-rog" style="width:100%; justify-content:center; font-size:.78rem; padding:.5rem;">Add to Cart</button>
+                        <button type="submit" class="btn-rog" 
+                                style="width:100%; justify-content:center; font-size:.78rem; padding:.5rem; {{ $rel->stock == 0 ? 'opacity:.4; cursor:not-allowed;' : '' }}"
+                                {{ $rel->stock == 0 ? 'disabled' : '' }}>
+                            {{ $rel->stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+                        </button>
                     </form>
                 </div>
             </div>

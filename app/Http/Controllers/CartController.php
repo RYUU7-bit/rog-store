@@ -63,6 +63,11 @@ class CartController extends Controller
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
 
+        $sessionId = $this->getSessionId();
+        if ($cart->session_id !== $sessionId) {
+            abort(403, 'Unauthorized action.');
+        }
+
         if ($request->quantity > $cart->product->stock) {
             return redirect()->back()->with('error', 'Not enough stock');
         }
