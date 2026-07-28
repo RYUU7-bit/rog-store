@@ -2,6 +2,11 @@
 set -e
 cd /var/www/html
 
+# ── Clear all cached config before regenerating .env ──────────────────────────
+php artisan config:clear 2>/dev/null || true
+php artisan cache:clear 2>/dev/null || true
+rm -f bootstrap/cache/config.php 2>/dev/null || true
+
 # ── SQLite: use /tmp which is always writable on Render's ephemeral filesystem
 # Copy the seeded sqlite from the image to /tmp on first boot, then keep using /tmp
 if [ -z "$DATABASE_URL" ]; then
@@ -12,7 +17,12 @@ if [ -z "$DATABASE_URL" ]; then
             touch /tmp/database.sqlite
         fi
     fi
-    chmod 664 /tmp/database.sqlite
+    chmod 666 /tmp/database.sqlite 2>/dev/null || true
+    chown www-data:www-data /tmp/database.sqlite 2>/dev/null || true
+    
+    # Also fix the baked-in sqlite if it exists (belt and suspenders)
+    chmod 666 /var/www/html/database/database.sqlite 2>/dev/null || true
+    chown www-data:www-data /var/www/html/database/database.sqlite 2>/dev/null || true
 fi
 
 # ── Fix permissions on storage/bootstrap (Render may reset these) ─────────────

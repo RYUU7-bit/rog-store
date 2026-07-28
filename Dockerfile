@@ -55,8 +55,8 @@ RUN mkdir -p \
     storage/logs \
     bootstrap/cache \
     database \
- && chmod -R 775 storage bootstrap/cache database \
- && chmod 664 database/database.sqlite 2>/dev/null || true \
+ && chmod -R 777 storage bootstrap/cache database \
+ && chmod 666 database/database.sqlite 2>/dev/null || true \
  && chown -R www-data:www-data /var/www/html
 
 # ── Config files (v2) ────────────────────────────────────────────────────────
