@@ -16,7 +16,6 @@ services:
         value: https://rog-store.onrender.com
       - key: LOG_LEVEL
         value: error
-      # Sessions stored in DB so they survive container restarts / new instances
       - key: SESSION_DRIVER
         value: database
       - key: SESSION_LIFETIME
@@ -35,16 +34,17 @@ services:
         sync: false
       - key: BAKONG_TOKEN
         sync: false
-      # ── Telegram env vars
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: TELEGRAM_CHAT_ID
         sync: false
+      # Link to the free PostgreSQL database defined below
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rog-store-db
+          property: connectionString
 
-# ── PostgreSQL Database (recommended - add this in Render Dashboard instead) ──
-# In Render Dashboard:
-# 1. Create a new PostgreSQL database
-# 2. Go to your web service → Environment
-# 3. Add DATABASE_URL and link it to the Postgres internal connection string
-# 
-# This will automatically switch from SQLite to Postgres and persist all data.
+databases:
+  - name: rog-store-db
+    databaseName: rog_store
+    plan: free
