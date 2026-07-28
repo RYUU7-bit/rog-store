@@ -35,3 +35,16 @@ services:
         sync: false
       - key: BAKONG_TOKEN
         sync: false
+      # ── Telegram env vars
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+
+# ── PostgreSQL Database (recommended - add this in Render Dashboard instead) ──
+# In Render Dashboard:
+# 1. Create a new PostgreSQL database
+# 2. Go to your web service → Environment
+# 3. Add DATABASE_URL and link it to the Postgres internal connection string
+# 
+# This will automatically switch from SQLite to Postgres and persist all data.

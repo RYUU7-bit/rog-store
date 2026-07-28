@@ -2,6 +2,23 @@
 set -e
 cd /var/www/html
 
+# ── SQLite: use /tmp which is always writable on Render's ephemeral filesystem
+# Copy the seeded sqlite from the image to /tmp on first boot, then keep using /tmp
+if [ -z "$DATABASE_URL" ]; then
+    if [ ! -f /tmp/database.sqlite ]; then
+        if [ -f /var/www/html/database/database.sqlite ]; then
+            cp /var/www/html/database/database.sqlite /tmp/database.sqlite
+        else
+            touch /tmp/database.sqlite
+        fi
+    fi
+    chmod 664 /tmp/database.sqlite
+fi
+
+# ── Fix permissions on storage/bootstrap (Render may reset these) ─────────────
+chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
+
 # Generate .env from environment variables using PHP
 php << 'PHPEOF'
 <?php
@@ -16,8 +33,8 @@ if ($url) {
         . "DB_PASSWORD=" . ($u['pass'] ?? '') . "\n"
         . "DB_SSLMODE=require\n";
 } else {
-    touch('/var/www/html/database/database.sqlite');
-    $db = "DB_CONNECTION=sqlite\nDB_DATABASE=/var/www/html/database/database.sqlite\n";
+    // SQLite lives in /tmp so it is always writable on Render
+    $db = "DB_CONNECTION=sqlite\nDB_DATABASE=/tmp/database.sqlite\n";
 }
 
 $key    = getenv('APP_KEY') ?: '';
