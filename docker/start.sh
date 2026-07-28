@@ -4,8 +4,13 @@ cd /var/www/html
 
 # ── Validate required env vars ─────────────────────────────────────────────────
 if [ -z "$DATABASE_URL" ]; then
-    echo "ERROR: DATABASE_URL is not set. A PostgreSQL database is required on Render."
-    echo "Please create a free PostgreSQL database in your Render dashboard and link it."
+    echo "ERROR: DATABASE_URL is not set."
+    echo "Create a free PostgreSQL database on Render and add DATABASE_URL to env vars."
+    exit 1
+fi
+
+if [ -z "$APP_KEY" ]; then
+    echo "ERROR: APP_KEY is not set."
     exit 1
 fi
 
@@ -15,58 +20,47 @@ rm -f bootstrap/cache/config.php bootstrap/cache/routes-v7.php 2>/dev/null || tr
 # ── Fix permissions on storage/bootstrap ──────────────────────────────────────
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 
-# ── Generate .env from environment variables ───────────────────────────────────
-php << 'PHPEOF'
-<?php
-$url = getenv('DATABASE_URL');
-$u   = parse_url($url);
-$db  = "DB_CONNECTION=pgsql\n"
-     . "DB_HOST="     . ($u['host'] ?? '') . "\n"
-     . "DB_PORT="     . ($u['port'] ?? 5432) . "\n"
-     . "DB_DATABASE=" . ltrim($u['path'] ?? 'rog_store', '/') . "\n"
-     . "DB_USERNAME=" . ($u['user'] ?? '') . "\n"
-     . "DB_PASSWORD=" . ($u['pass'] ?? '') . "\n"
-     . "DB_SSLMODE=require\n";
+# ── Write .env directly from environment variables ────────────────────────────
+# The pgsql connection in config/database.php reads DATABASE_URL natively,
+# so we just need to set DB_CONNECTION=pgsql and pass DATABASE_URL through.
+cat > /var/www/html/.env << ENV
+APP_NAME="ROG Store"
+APP_ENV=production
+APP_KEY=${APP_KEY}
+APP_DEBUG=${APP_DEBUG:-false}
+APP_URL=${APP_URL:-https://rog-store.onrender.com}
+APP_LOCALE=en
 
-$key    = getenv('APP_KEY') ?: '';
-$appUrl = getenv('APP_URL') ?: 'https://rog-store.onrender.com';
-$debug  = getenv('APP_DEBUG') ?: 'false';
-$bName  = getenv('BAKONG_MERCHANT_NAME') ?: '';
-$bCity  = getenv('BAKONG_MERCHANT_CITY') ?: '';
+LOG_CHANNEL=stderr
+LOG_LEVEL=${LOG_LEVEL:-error}
 
-$env = "APP_NAME=\"ROG Store\"\n"
-     . "APP_ENV=production\n"
-     . "APP_KEY=$key\n"
-     . "APP_DEBUG=$debug\n"
-     . "APP_URL=$appUrl\n"
-     . "APP_LOCALE=en\n"
-     . "LOG_CHANNEL=stderr\n"
-     . "LOG_LEVEL=error\n"
-     . $db
-     . "SESSION_DRIVER=database\n"
-     . "SESSION_LIFETIME=120\n"
-     . "SESSION_SECURE_COOKIE=true\n"
-     . "CACHE_STORE=database\n"
-     . "QUEUE_CONNECTION=sync\n"
-     . "FILESYSTEM_DISK=local\n"
-     . "BROADCAST_CONNECTION=log\n"
-     . "BAKONG_API_URL="    . (getenv('BAKONG_API_URL') ?: 'https://api-bakong.nbc.gov.kh') . "\n"
-     . "BAKONG_ACCOUNT_ID=" . (getenv('BAKONG_ACCOUNT_ID') ?: '') . "\n"
-     . "BAKONG_MERCHANT_NAME=\"$bName\"\n"
-     . "BAKONG_MERCHANT_CITY=\"$bCity\"\n"
-     . "BAKONG_TOKEN="         . (getenv('BAKONG_TOKEN') ?: '') . "\n"
-     . "TELEGRAM_BOT_TOKEN="   . (getenv('TELEGRAM_BOT_TOKEN') ?: '') . "\n"
-     . "TELEGRAM_CHAT_ID="     . (getenv('TELEGRAM_CHAT_ID') ?: '') . "\n";
+DB_CONNECTION=pgsql
+DATABASE_URL=${DATABASE_URL}
+DB_SSLMODE=require
 
-file_put_contents('/var/www/html/.env', $env);
-echo "ENV written. Using PostgreSQL.\n";
-PHPEOF
+SESSION_DRIVER=database
+SESSION_LIFETIME=120
+SESSION_SECURE_COOKIE=true
 
-# ── Only generate APP_KEY if Render did not inject one ────────────────────────
-php -r "if (!getenv('APP_KEY')) { passthru('php artisan key:generate --force --no-interaction'); } else { echo 'APP_KEY already set, skipping.' . PHP_EOL; }"
+CACHE_STORE=database
+QUEUE_CONNECTION=sync
+FILESYSTEM_DISK=local
+BROADCAST_CONNECTION=log
+
+BAKONG_API_URL=${BAKONG_API_URL:-https://api-bakong.nbc.gov.kh}
+BAKONG_ACCOUNT_ID=${BAKONG_ACCOUNT_ID:-}
+BAKONG_MERCHANT_NAME=${BAKONG_MERCHANT_NAME:-}
+BAKONG_MERCHANT_CITY=${BAKONG_MERCHANT_CITY:-}
+BAKONG_TOKEN=${BAKONG_TOKEN:-}
+
+TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+ENV
+
+echo "ENV written. Using PostgreSQL via DATABASE_URL."
 
 # ── Run migrations and seed ───────────────────────────────────────────────────
-php artisan migrate --force --no-interaction || { echo "Migration failed, attempting to continue..."; }
+php artisan migrate --force --no-interaction || { echo "Migration failed"; exit 1; }
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 php artisan storage:link --force 2>/dev/null || true
 php artisan optimize:clear
