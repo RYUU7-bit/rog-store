@@ -22,11 +22,12 @@ class TelegramService
     public function send(string $message): bool
     {
         if (empty($this->token) || empty($this->chatId)) {
+            Log::warning('Telegram: bot_token or chat_id is not configured.');
             return false;
         }
 
         try {
-            $response = Http::timeout(8)->post(
+            $response = Http::timeout(10)->post(
                 "https://api.telegram.org/bot{$this->token}/sendMessage",
                 [
                     'chat_id'    => $this->chatId,
@@ -35,7 +36,15 @@ class TelegramService
                 ]
             );
 
-            return $response->successful();
+            if (!$response->successful()) {
+                Log::warning('Telegram API error', [
+                    'status' => $response->status(),
+                    'body'   => $response->body(),
+                ]);
+                return false;
+            }
+
+            return true;
         } catch (\Exception $e) {
             Log::warning('Telegram notification failed: ' . $e->getMessage());
             return false;
@@ -45,18 +54,22 @@ class TelegramService
     /**
      * Send a new order notification.
      */
-    public function notifyNewOrder(\App\Models\Order $order): void
+    public function notifyNewOrder(\App\Models\Order $order): bool
     {
         $items = $order->items->map(fn($i) =>
             "  • {$i->product_name} × {$i->quantity}  <b>\${$i->total}</b>"
         )->implode("\n");
 
+        if (empty($items)) {
+            $items = "  (no items loaded)";
+        }
+
         $paymentMethod = match($order->payment_method) {
-            'bakong_khqr'  => '🏦 BAKONG KHQR',
-            'credit_card'  => '💳 Credit Card',
-            'paypal'       => '🔵 PayPal',
-            'bank_transfer'=> '🏛 Bank Transfer',
-            default        => $order->payment_method,
+            'bakong_khqr'   => '🏦 BAKONG KHQR',
+            'credit_card'   => '💳 Credit Card',
+            'paypal'        => '🔵 PayPal',
+            'bank_transfer' => '🏛 Bank Transfer',
+            default         => $order->payment_method ?? 'Unknown',
         };
 
         $message = "🛒 <b>NEW ORDER — ROG Store</b>\n"
@@ -75,8 +88,8 @@ class TelegramService
             . "━━━━━━━━━━━━━━━━━━━━\n"
             . "💳 Payment: {$paymentMethod}\n"
             . "📊 Status: <b>" . strtoupper($order->status) . "</b>\n"
-            . "🕐 Time: " . $order->created_at->format('d M Y H:i') . " UTC";
+            . "🕐 Time: " . now()->format('d M Y H:i') . " UTC";
 
-        $this->send($message);
+        return $this->send($message);
     }
 }

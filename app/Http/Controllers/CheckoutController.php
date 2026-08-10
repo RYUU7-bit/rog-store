@@ -133,11 +133,19 @@ class CheckoutController extends Controller
         $sessionId = $this->getSessionId();
         Cart::where('session_id', $sessionId)->delete();
 
-        // Telegram
+        // Send Telegram — load items WITH products so product_name is available
         try {
-            (new TelegramService())->notifyNewOrder($order->load('items'));
+            $order->load('items');
+            $telegram = new TelegramService();
+            $sent = $telegram->notifyNewOrder($order);
+            \Illuminate\Support\Facades\Log::info('Telegram notify result', [
+                'order'  => $order->order_number,
+                'sent'   => $sent,
+                'token'  => !empty(config('services.telegram.bot_token')) ? 'SET' : 'MISSING',
+                'chatid' => !empty(config('services.telegram.chat_id'))   ? 'SET' : 'MISSING',
+            ]);
         } catch (\Exception $e) {
-            // Silent fail
+            \Illuminate\Support\Facades\Log::error('Telegram notification error: ' . $e->getMessage());
         }
 
         return response()->json(['success' => true]);
