@@ -427,7 +427,16 @@ const BakongPayment = (function () {
                 return;
             }
             json(ROUTES.bakongCheck, { md5 })
-                .then(d => { if (d.paid) { stopPolling(); triggerSuccess(); } })
+                .then(d => {
+                    if (d.paid) {
+                        stopPolling();
+                        // ── Auto-detected payment: confirm on server first ──
+                        // This marks order paid, clears cart, fires Telegram
+                        json(ROUTES.confirmBakong, { order_number: currentOrder.order_number })
+                            .then(() => triggerSuccess())
+                            .catch(() => triggerSuccess()); // redirect even on network error
+                    }
+                })
                 .catch(() => {});
         }, POLL_INTERVAL_MS);
     }
