@@ -14,6 +14,7 @@ RUN apk add --no-cache \
     freetype-dev \
     libzip-dev \
     libpq-dev \
+    sqlite-dev \
     oniguruma-dev \
     supervisor \
     nodejs \
@@ -22,7 +23,7 @@ RUN apk add --no-cache \
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-install \
-    pdo pdo_pgsql pgsql gd zip mbstring exif pcntl bcmath opcache
+    pdo pdo_pgsql pgsql pdo_sqlite gd zip mbstring exif pcntl bcmath opcache
 
 # ── Composer ──────────────────────────────────────────────────────────────────
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

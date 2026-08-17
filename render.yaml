@@ -22,7 +22,7 @@ services:
       - key: SESSION_LIFETIME
         value: "120"
       - key: SESSION_SECURE_COOKIE
-        value: "true"
+        value: "false"
       - key: CACHE_STORE
         value: database
       - key: BAKONG_API_URL
