@@ -12,7 +12,7 @@ services:
       - key: APP_DEBUG
         value: "true"
       - key: APP_KEY
-        generateValue: true
+        value: "base64:cjh0b296V1ZlMnhuTXRwbjR0UG9mY1VpdmNYeEVmRnc="
       - key: APP_URL
         value: https://rog-store.onrender.com
       - key: LOG_LEVEL

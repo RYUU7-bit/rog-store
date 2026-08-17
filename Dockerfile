@@ -63,7 +63,7 @@ COPY docker/nginx.conf       /etc/nginx/http.d/default.conf
 COPY docker/php-fpm.conf     /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/start.sh         /start.sh
-# cache-bust: 2026-08-17-diagnostic-v5
+# cache-bust: 2026-08-17-app-key-fix-v6
 RUN chmod +x /start.sh
 
 EXPOSE 10000
