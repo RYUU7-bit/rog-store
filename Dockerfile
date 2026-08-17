@@ -16,9 +16,7 @@ RUN apk add --no-cache \
     libpq-dev \
     sqlite-dev \
     oniguruma-dev \
-    supervisor \
-    nodejs \
-    npm
+    supervisor
 
 # ── PHP extensions ────────────────────────────────────────────────────────────
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -41,9 +39,10 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader --no-script
 # ── Copy app files (except node_modules and public/build) ────────────────────
 COPY . .
 
-# ── Build frontend assets ─────────────────────────────────────────────────────
-RUN npm install --ignore-scripts
-RUN npm run build
+# ── Frontend assets are pre-built and committed to repo ──────────────────────
+# public/build/manifest.json and assets are already in the repo.
+# We do NOT run npm build here to avoid hash mismatch breaking @vite() directive.
+# To update assets: run `npm run build` locally and commit public/build/
 
 # ── Post-install ──────────────────────────────────────────────────────────────
 RUN composer run-script post-autoload-dump 2>/dev/null || true
