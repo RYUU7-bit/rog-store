@@ -21,35 +21,35 @@
     </div>
 </div>
 
-<div style="max-width:1100px; margin:0 auto; padding:3rem 1.5rem 4rem;">
+<div style="max-width:1100px; margin:0 auto; padding:2rem 1rem 3.5rem;">
 
     {{-- ── Stats Strip ──────────────────────────────────────────────────── --}}
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border-card); border:1px solid var(--border-card); margin-bottom:3rem;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:1px; background:var(--border-card); border:1px solid var(--border-card); margin-bottom:2.5rem; border-radius:6px; overflow:hidden;" class="contact-stats-grid">
         @foreach([
-            ['⚡','< 2 Hours','Average response time'],
-            ['🕐','24 / 7','Live support available'],
-            ['⭐','4.9 / 5','Customer satisfaction'],
+            ['⚡','< 2 Hours','Avg Response'],
+            ['🕐','24 / 7','Live Support'],
+            ['⭐','4.9 / 5','Satisfaction'],
         ] as [$icon,$stat,$label])
-        <div style="background:var(--bg-card); padding:1.5rem; text-align:center;">
-            <div style="font-size:1.4rem; margin-bottom:.4rem;">{{ $icon }}</div>
-            <div style="font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:900; color:var(--rog-red); margin-bottom:.2rem;">{{ $stat }}</div>
-            <div style="font-size:.75rem; color:var(--text-muted); letter-spacing:.06em; text-transform:uppercase;">{{ $label }}</div>
+        <div style="background:var(--bg-card); padding:1.2rem .8rem; text-align:center;">
+            <div style="font-size:1.3rem; margin-bottom:.3rem;">{{ $icon }}</div>
+            <div style="font-family:'Orbitron',sans-serif; font-size:1.05rem; font-weight:900; color:var(--rog-red); margin-bottom:.15rem;">{{ $stat }}</div>
+            <div style="font-size:.7rem; color:var(--text-muted); letter-spacing:.05em; text-transform:uppercase;">{{ $label }}</div>
         </div>
         @endforeach
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr 420px; gap:2rem; align-items:start;">
+    <div style="display:grid; grid-template-columns:1fr 420px; gap:2rem; align-items:start;" class="contact-layout-grid">
 
         {{-- ── Left: Contact Form ───────────────────────────────────────── --}}
         <div>
-            <div style="background:var(--bg-card); border:1px solid var(--border-card); overflow:hidden;">
+            <div style="background:var(--bg-card); border:1px solid var(--border-card); overflow:hidden; border-radius:8px;">
                 {{-- Card header --}}
-                <div style="background:var(--bg-elevated); border-bottom:1px solid var(--border-divider); padding:1.2rem 1.8rem; display:flex; align-items:center; gap:.7rem;">
-                    <div style="width:3px; height:20px; background:var(--rog-red);"></div>
+                <div style="background:var(--bg-elevated); border-bottom:1px solid var(--border-divider); padding:1rem 1.4rem; display:flex; align-items:center; gap:.7rem;">
+                    <div style="width:3px; height:18px; background:var(--rog-red);"></div>
                     <h2 style="font-weight:800; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--text-primary); margin:0;">✉️ Send Us a Message</h2>
                 </div>
 
-                <div style="padding:2rem 1.8rem;">
+                <div style="padding:1.5rem 1.4rem;">
                     {{-- Success state --}}
                     <div id="contact-success" style="display:none; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.3); padding:1rem 1.2rem; margin-bottom:1.5rem; display:none; align-items:center; gap:.7rem;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
@@ -60,7 +60,7 @@
                     </div>
 
                     <form id="contact-form" onsubmit="rogContactSubmit(event)" novalidate>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.2rem;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;" class="contact-names-grid">
                             <div>
                                 <label class="rog-label">Full Name *</label>
                                 <input type="text" name="name" class="rog-input" required placeholder="John Doe" autocomplete="name">
@@ -239,11 +239,13 @@ function rogContactSubmit(e) {
 <style>
 @keyframes spin  { to { transform: rotate(360deg); } }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.75);} }
-@media (max-width: 900px) {
-    /* Stack to single column on tablet */
-}
-@media (max-width: 640px) {
-    .contact-grid { grid-template-columns: 1fr !important; }
+@media (max-width: 860px) {
+    .contact-layout-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .contact-names-grid {
+        grid-template-columns: 1fr !important;
+    }
 }
 </style>
 @endpush

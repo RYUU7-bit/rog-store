@@ -30,22 +30,33 @@
 </head>
 <body>
 
-{{-- ═══ NAVBAR ═══════════════════════════════════════════════════════════════ --}}
-<nav class="navbar">
-    <div style="max-width:1280px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; height:64px;">
+{{-- ═══ NAVBAR / APP BAR ═════════════════════════════════════════════════════ --}}
+<nav class="navbar mobile-app-header">
+    <div style="max-width:1280px; width:100%; margin:0 auto; padding:0 1rem; display:flex; align-items:center; justify-content:space-between; height:100%;">
 
-        {{-- Logo --}}
-        <a href="{{ route('home') }}" style="display:flex; align-items:center; gap:.7rem; text-decoration:none;">
-            <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="#e5001e" opacity=".15"/>
-                <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="none" stroke="#e5001e" stroke-width="3"/>
-                <text x="50" y="62" text-anchor="middle" font-family="Orbitron,sans-serif" font-weight="900" font-size="28" fill="#e5001e">ROG</text>
-            </svg>
-            <div>
-                <div class="nav-logo-text" style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:1.1rem; color:#fff; line-height:1;">ROG</div>
-                <div style="font-size:.6rem; color:#e5001e; letter-spacing:.2em; text-transform:uppercase;">Republic of Gamers</div>
-            </div>
-        </a>
+        {{-- Left: Drawer button on mobile + Logo --}}
+        <div style="display:flex; align-items:center; gap:.8rem;">
+            {{-- Mobile Drawer Trigger --}}
+            <button id="drawer-toggle-btn" class="show-mobile" aria-label="Open Navigation Drawer"
+                    style="background:none; border:none; color:var(--text-primary); cursor:pointer; padding:.4rem; display:flex; align-items:center; justify-content:center;">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            {{-- Brand Logo --}}
+            <a href="{{ route('home') }}" style="display:flex; align-items:center; gap:.6rem; text-decoration:none;">
+                <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="#e5001e" opacity=".15"/>
+                    <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="none" stroke="#e5001e" stroke-width="3"/>
+                    <text x="50" y="62" text-anchor="middle" font-family="Orbitron,sans-serif" font-weight="900" font-size="28" fill="#e5001e">ROG</text>
+                </svg>
+                <div>
+                    <div class="nav-logo-text" style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:1.05rem; color:#fff; line-height:1;">ROG</div>
+                    <div style="font-size:.56rem; color:#e5001e; letter-spacing:.2em; text-transform:uppercase; font-weight:700;">Republic of Gamers</div>
+                </div>
+            </a>
+        </div>
 
         {{-- Desktop Nav --}}
         <div style="display:flex; align-items:center; gap:.25rem;" class="hidden-mobile">
@@ -70,9 +81,9 @@
             <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-rog' : '' }}">Contact</a>
         </div>
 
-        {{-- Right Icons --}}
-        <div style="display:flex; align-items:center; gap:1rem;">
-            {{-- Search --}}
+        {{-- Right Action Icons --}}
+        <div style="display:flex; align-items:center; gap:.7rem;">
+            {{-- Desktop Search --}}
             <form action="{{ route('shop') }}" method="GET" class="nav-search-bar hidden-mobile" style="display:flex; align-items:center; background:#1a1a1a; border:1px solid #2a2a2a; padding:.3rem .8rem; gap:.5rem;">
                 <input type="text" name="search" placeholder="Search ROG products…" value="{{ request('search') }}"
                        style="background:none; border:none; color:var(--text-primary); font-size:.82rem; width:180px; outline:none;">
@@ -81,7 +92,16 @@
                 </button>
             </form>
 
-            {{-- Theme Toggle --}}
+            {{-- Mobile Search Trigger Button --}}
+            <button id="mobile-search-btn" class="show-mobile" aria-label="Search ROG products"
+                    style="background:none; border:none; color:var(--text-primary); cursor:pointer; padding:.4rem; display:flex; align-items:center;">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                </svg>
+            </button>
+
+            {{-- Theme Toggle Switch --}}
             <label class="theme-toggle" title="Toggle light / dark mode" aria-label="Toggle light / dark mode">
                 <input type="checkbox" id="theme-checkbox" role="switch" aria-checked="false">
                 <span class="theme-track">
@@ -91,46 +111,171 @@
                 <span class="theme-thumb"></span>
             </label>
 
-            {{-- Cart --}}
-            <a href="{{ route('cart') }}" class="cart-icon-link" style="position:relative; color:var(--text-nav); text-decoration:none; display:flex; align-items:center; padding:.4rem;" title="Cart">
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            {{-- Cart Link with Live Badge --}}
+            <a href="{{ route('cart') }}" class="cart-icon-link" style="position:relative; color:var(--text-primary); text-decoration:none; display:flex; align-items:center; padding:.4rem;" title="Cart">
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21h6"/>
                 </svg>
                 @if($cartCount > 0)
-                <span style="position:absolute; top:-4px; right:-4px; background:var(--rog-red); color:#fff; font-size:.65rem; font-weight:700; min-width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; padding:0 3px;">
+                <span style="position:absolute; top:-3px; right:-3px; background:var(--rog-red); color:#fff; font-size:.65rem; font-weight:900; min-width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; padding:0 3px; box-shadow:0 2px 6px rgba(var(--rog-red-rgb),.5);">
                     {{ $cartCount }}
                 </span>
                 @endif
             </a>
-
-            {{-- Mobile hamburger --}}
-            <button id="mobile-toggle" style="background:none;border:none;color:#ccc;cursor:pointer;" class="show-mobile">
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
         </div>
     </div>
+</nav>
 
-    {{-- Mobile Menu --}}
-    <div id="mobile-menu" style="background:#0d0d0d; border-top:1px solid #1e1e1e; padding:1rem 1.5rem;">
-        <form action="{{ route('shop') }}" method="GET" style="display:flex; align-items:center; background:#1a1a1a; border:1px solid #2a2a2a; padding:.5rem 1rem; gap:.5rem; margin-bottom:1rem;">
-            <input type="text" name="search" placeholder="Search products…" value="{{ request('search') }}"
-                   style="background:none;border:none;color:#ddd;font-size:.85rem;width:100%;outline:none;">
-            <button type="submit" style="background:none;border:none;color:#888;cursor:pointer;">🔍</button>
-        </form>
-        <a href="{{ route('home') }}" class="nav-link" style="display:block;margin:.4rem 0;">Home</a>
-        <a href="{{ route('shop') }}" class="nav-link" style="display:block;margin:.4rem 0;">Shop</a>
-        <a href="{{ route('about') }}" class="nav-link" style="display:block;margin:.4rem 0;">About</a>
-        <a href="{{ route('contact') }}" class="nav-link" style="display:block;margin:.4rem 0;">Contact</a>
-        <div style="border-top:1px solid #1e1e1e;margin:.8rem 0;padding-top:.8rem;">
+{{-- ═══ MOBILE SLIDE-IN DRAWER ═══════════════════════════════════════════════ --}}
+<div id="drawer-backdrop" class="drawer-backdrop">
+    <div class="mobile-drawer-sheet">
+        {{-- Header --}}
+        <div class="drawer-header">
+            <div style="display:flex; align-items:center; gap:.7rem;">
+                <div style="width:36px; height:36px; border-radius:8px; background:var(--rog-red); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Orbitron',sans-serif; font-weight:900; font-size:.9rem;">
+                    ROG
+                </div>
+                <div>
+                    <div style="font-family:'Orbitron',sans-serif; font-weight:800; font-size:.9rem; color:#fff;">ROG Store App</div>
+                    <div style="font-size:.68rem; color:#22c55e; font-weight:700;">● Online · Elite Gaming</div>
+                </div>
+            </div>
+            <button id="drawer-close-btn" class="drawer-close-btn" aria-label="Close menu">✕</button>
+        </div>
+
+        {{-- Navigation Links --}}
+        <div class="drawer-links-group">
+            <a href="{{ route('home') }}" class="drawer-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                <span class="drawer-icon-wrap">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="{{ route('shop') }}" class="drawer-nav-item {{ request()->routeIs('shop') && !request('category') ? 'active' : '' }}">
+                <span class="drawer-icon-wrap">🛍️</span>
+                <span>Shop All Gear</span>
+            </a>
+            <a href="{{ route('cart') }}" class="drawer-nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
+                <span class="drawer-icon-wrap">🛒</span>
+                <span>Shopping Cart</span>
+                @if($cartCount > 0)
+                <span style="margin-left:auto; background:var(--rog-red); color:#fff; font-size:.7rem; font-weight:900; padding:2px 7px; border-radius:99px;">{{ $cartCount }}</span>
+                @endif
+            </a>
+            <a href="{{ route('about') }}" class="drawer-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
+                <span class="drawer-icon-wrap">🛡️</span>
+                <span>About ROG</span>
+            </a>
+            <a href="{{ route('contact') }}" class="drawer-nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
+                <span class="drawer-icon-wrap">✉️</span>
+                <span>Support & Contact</span>
+            </a>
+
+            {{-- Categories Section --}}
+            <div style="padding:1.2rem 1.4rem .4rem;">
+                <div style="font-size:.7rem; font-weight:800; color:var(--rog-red); letter-spacing:.15em; text-transform:uppercase;">Hardware Categories</div>
+            </div>
             @foreach($navCategories as $cat)
-            <a href="{{ route('shop', ['category' => $cat->slug]) }}" style="display:block;color:#aaa;text-decoration:none;padding:.4rem 0;font-size:.85rem;font-weight:600;">
-                {{ $cat->name }}
+            <a href="{{ route('shop', ['category' => $cat->slug]) }}" 
+               class="drawer-nav-item {{ request('category') === $cat->slug ? 'active' : '' }}"
+               style="font-size:.85rem; padding-left:1.8rem;">
+                <span style="color:var(--text-muted); font-size:.8rem;">›</span>
+                <span>{{ $cat->name }}</span>
             </a>
             @endforeach
         </div>
+
+        {{-- Drawer Footer --}}
+        <div style="padding:1.2rem; border-top:1px solid var(--border-base); background:var(--bg-elevated); margin-top:auto;">
+            <div style="font-size:.75rem; color:var(--text-muted); text-align:center;">
+                Republic of Gamers™ · For Those Who Dare
+            </div>
+        </div>
     </div>
+</div>
+
+{{-- ═══ MOBILE INSTANT SEARCH MODAL SHEET ════════════════════════════════════ --}}
+<div id="mobile-search-modal" class="search-modal-overlay">
+    <div class="search-modal-content">
+        <div style="padding:1rem 1.2rem; border-bottom:1px solid var(--border-base); display:flex; align-items:center; gap:.8rem;">
+            <form action="{{ route('shop') }}" method="GET" style="display:flex; align-items:center; flex:1; background:var(--bg-elevated); border:1px solid var(--border-input); border-radius:8px; padding:.5rem .9rem; gap:.6rem;">
+                <span style="color:var(--text-muted); font-size:.9rem;">🔍</span>
+                <input type="text" name="search" id="mobile-search-input" placeholder="Search ROG laptops, GPUs, monitors…" value="{{ request('search') }}"
+                       style="background:none; border:none; color:var(--text-primary); font-size:.95rem; width:100%; outline:none;">
+                <button type="submit" style="background:var(--rog-red); color:#fff; border:none; border-radius:4px; padding:.3rem .6rem; font-size:.75rem; font-weight:700; cursor:pointer;">Search</button>
+            </form>
+            <button id="search-modal-close" style="background:none; border:none; color:var(--text-primary); font-size:1.2rem; cursor:pointer; padding:.3rem;">✕</button>
+        </div>
+        <div style="padding:1rem 1.2rem;">
+            <div style="font-size:.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.7rem;">🔥 Popular Searches</div>
+            <div style="display:flex; flex-wrap:wrap; gap:.5rem;">
+                @foreach(['Zephyrus G16', 'RTX 4090', 'ROG Swift OLED', 'Gaming Keyboards', 'ROG Harpe Ace', 'Gaming Headsets'] as $hotTag)
+                <a href="{{ route('shop', ['search' => $hotTag]) }}" class="cat-pill" style="font-size:.78rem; padding:.35rem .75rem;">
+                    ⚡ {{ $hotTag }}
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ═══ NATIVE MOBILE APP BOTTOM TAB BAR ═════════════════════════════════════ --}}
+<nav class="mobile-tab-bar" aria-label="Mobile Navigation">
+    {{-- Home Tab --}}
+    <a href="{{ route('home') }}" class="mobile-tab-item {{ request()->routeIs('home') ? 'active' : '' }}">
+        <div class="mobile-tab-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+        </div>
+        <span>Home</span>
+    </a>
+
+    {{-- Shop Tab --}}
+    <a href="{{ route('shop') }}" class="mobile-tab-item {{ request()->routeIs('shop*') || request()->routeIs('product.*') ? 'active' : '' }}">
+        <div class="mobile-tab-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+        </div>
+        <span>Shop</span>
+    </a>
+
+    {{-- Search Tab (triggers quick modal) --}}
+    <button type="button" id="tab-search-btn" class="mobile-tab-item" style="background:none; border:none; cursor:pointer;">
+        <div class="mobile-tab-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.3-4.3"/>
+            </svg>
+        </div>
+        <span>Search</span>
+    </button>
+
+    {{-- Cart Tab --}}
+    <a href="{{ route('cart') }}" class="mobile-tab-item {{ request()->routeIs('cart*') || request()->routeIs('checkout*') ? 'active' : '' }}">
+        <div class="mobile-tab-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21h6"/>
+            </svg>
+            @if($cartCount > 0)
+            <span class="mobile-tab-badge">{{ $cartCount }}</span>
+            @endif
+        </div>
+        <span>Cart</span>
+    </a>
+
+    {{-- AI Assistant Tab --}}
+    <button type="button" id="tab-ai-btn" class="mobile-tab-item" style="background:none; border:none; cursor:pointer;">
+        <div class="mobile-tab-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"/>
+                <circle cx="12" cy="5" r="2"/>
+                <path d="M12 7v4"/>
+                <line x1="8" y1="16" x2="8" y2="16"/>
+                <line x1="16" y1="16" x2="16" y2="16"/>
+            </svg>
+        </div>
+        <span>ROG AI</span>
+    </button>
 </nav>
 
 {{-- ═══ Flash Messages ══════════════════════════════════════════════════════ --}}
@@ -262,13 +407,60 @@
 </style>
 
 <script>
-// Mobile nav toggle
-document.getElementById('mobile-toggle')?.addEventListener('click', () => {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('open');
+// ── Mobile Drawer Controller ───────────────────────────────────────────────
+(function () {
+    const backdrop  = document.getElementById('drawer-backdrop');
+    const openBtn   = document.getElementById('drawer-toggle-btn');
+    const closeBtn  = document.getElementById('drawer-close-btn');
+
+    function openDrawer() {
+        backdrop.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+        backdrop.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    openBtn?.addEventListener('click', openDrawer);
+    closeBtn?.addEventListener('click', closeDrawer);
+    backdrop?.addEventListener('click', function(e) {
+        if (e.target === backdrop) closeDrawer();
+    });
+})();
+
+// ── Mobile Instant Search Modal ─────────────────────────────────────────────
+(function () {
+    const modal    = document.getElementById('mobile-search-modal');
+    const openBtn1 = document.getElementById('mobile-search-btn');
+    const openBtn2 = document.getElementById('tab-search-btn');
+    const closeBtn = document.getElementById('search-modal-close');
+    const input    = document.getElementById('mobile-search-input');
+
+    function openSearch() {
+        modal.classList.add('is-open');
+        setTimeout(() => input?.focus(), 150);
+        document.body.style.overflow = 'hidden';
+    }
+    function closeSearch() {
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    openBtn1?.addEventListener('click', openSearch);
+    openBtn2?.addEventListener('click', openSearch);
+    closeBtn?.addEventListener('click', closeSearch);
+    modal?.addEventListener('click', function(e) {
+        if (e.target === modal) closeSearch();
+    });
+})();
+
+// ── AI Tab Button Trigger ───────────────────────────────────────────────────
+document.getElementById('tab-ai-btn')?.addEventListener('click', function () {
+    document.getElementById('rog-ai-btn')?.click();
 });
 
-// Dropdown toggle
+// ── Dropdown toggle ─────────────────────────────────────────────────────────
 function toggleDropdown(btn) {
     const menu = btn.nextElementSibling;
     const isVisible = menu.style.display === 'block';

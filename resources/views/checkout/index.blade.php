@@ -14,14 +14,14 @@
 
     <form id="checkout-form" action="{{ route('checkout.store') }}" method="POST">
         @csrf
-        <div style="display:grid; grid-template-columns:1fr 380px; gap:2rem; align-items:start;">
+        <div style="display:grid; grid-template-columns:1fr 380px; gap:2rem; align-items:start;" class="checkout-layout-grid">
 
             {{-- ── Left: Forms ─────────────────────────────────────────────── --}}
             <div>
                 {{-- Shipping --}}
-                <div style="background:var(--bg-card); border:1px solid var(--border-card); padding:1.8rem; margin-bottom:1.5rem;">
-                    <h2 style="font-weight:800; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rog-red); margin-bottom:1.5rem; padding-bottom:.8rem; border-bottom:1px solid var(--border-divider);">📦 Shipping Information</h2>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;">
+                <div style="background:var(--bg-card); border:1px solid var(--border-card); padding:1.5rem; margin-bottom:1.5rem; border-radius:8px;">
+                    <h2 style="font-weight:800; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rog-red); margin-bottom:1.2rem; padding-bottom:.7rem; border-bottom:1px solid var(--border-divider);">📦 Shipping Information</h2>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;" class="shipping-form-grid">
                         <div>
                             <label class="rog-label">First Name *</label>
                             <input type="text" name="first_name" class="rog-input" value="{{ old('first_name') }}" required>
@@ -78,25 +78,25 @@
                 </div>
 
                 {{-- Payment Methods --}}
-                <div style="background:var(--bg-card); border:1px solid var(--border-card); padding:1.8rem; margin-bottom:1.5rem;">
-                    <h2 style="font-weight:800; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rog-red); margin-bottom:1.5rem; padding-bottom:.8rem; border-bottom:1px solid var(--border-divider);">💳 Payment Method</h2>
+                <div style="background:var(--bg-card); border:1px solid var(--border-card); padding:1.5rem; margin-bottom:1.5rem; border-radius:8px;">
+                    <h2 style="font-weight:800; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rog-red); margin-bottom:1.2rem; padding-bottom:.7rem; border-bottom:1px solid var(--border-divider);">💳 Payment Method</h2>
                     <div style="display:flex; flex-direction:column; gap:.8rem;" id="payment-methods">
 
                         {{-- BAKONG KHQR --}}
                         <label class="pay-label" data-method="bakong_khqr"
-                               style="display:flex; align-items:center; gap:1rem; padding:1rem 1.2rem; border:2px solid var(--rog-red); cursor:pointer; background:rgba(204,0,24,.04); border-radius:4px;">
+                               style="display:flex; align-items:center; gap:1rem; padding:1rem 1.2rem; border:2px solid var(--rog-red); cursor:pointer; background:rgba(204,0,24,.06); border-radius:6px;">
                             <input type="radio" name="payment_method" value="bakong_khqr" checked style="accent-color:var(--rog-red);">
-                            <div style="display:flex; align-items:center; gap:.7rem;">
+                            <div style="display:flex; align-items:center; gap:.7rem; flex:1; flex-wrap:wrap;">
                                 <div style="background:#e5001e; border-radius:4px; padding:4px 8px; display:flex; align-items:center; gap:4px; flex-shrink:0;">
                                     <span style="color:#fff; font-weight:900; font-size:.75rem; letter-spacing:.08em; font-family:'Orbitron',sans-serif;">KH</span>
                                     <span style="color:rgba(255,255,255,.5); font-size:.7rem;">|</span>
                                     <span style="color:#fff; font-size:.75rem; font-weight:900;">QR</span>
                                 </div>
-                                <div>
+                                <div style="flex:1; min-width:140px;">
                                     <div style="color:var(--text-primary); font-weight:700; font-size:.9rem;">BAKONG KHQR</div>
                                     <div style="color:var(--text-muted); font-size:.72rem;">Scan with any Cambodian banking app · Instant</div>
                                 </div>
-                                <span style="margin-left:auto; background:#22c55e; color:#fff; font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:.06em; flex-shrink:0;">RECOMMENDED</span>
+                                <span style="background:#22c55e; color:#fff; font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:.06em; flex-shrink:0;">RECOMMENDED</span>
                             </div>
                         </label>
 
@@ -676,6 +676,18 @@ const BakongPayment = (function () {
 /* Payment method label hover */
 .pay-label:hover {
     border-color: var(--rog-red) !important;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .shipping-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .shipping-form-grid > div {
+    grid-column: 1 / -1 !important;
+  }
 }
 </style>
 @endpush
