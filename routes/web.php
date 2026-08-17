@@ -9,6 +9,44 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\BakongController;
 use App\Http\Controllers\AdminController;
 
+// Diagnostic debug route
+Route::get('/debug-error', function () {
+    $results = [];
+
+    // 1. App key & env
+    $results['app_env'] = config('app.env');
+    $results['app_key_set'] = !empty(config('app.key'));
+    $results['db_connection_default'] = config('database.default');
+
+    // 2. Test DB
+    try {
+        \DB::connection()->getPdo();
+        $results['db'] = 'Connected: ' . \DB::connection()->getDatabaseName();
+        $results['categories_count'] = \App\Models\Category::count();
+        $results['products_count'] = \App\Models\Product::count();
+    } catch (\Throwable $e) {
+        $results['db_error'] = $e->getMessage();
+    }
+
+    // 3. Test Session
+    try {
+        \Session::put('test_key', 'test_val');
+        $results['session'] = 'Session working: ' . \Session::get('test_key');
+    } catch (\Throwable $e) {
+        $results['session_error'] = $e->getMessage();
+    }
+
+    // 4. Test View Render
+    try {
+        $view = view('about')->render();
+        $results['view_about_render'] = 'Success (length: ' . strlen($view) . ')';
+    } catch (\Throwable $e) {
+        $results['view_about_error'] = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+    }
+
+    return response()->json($results, 200, [], JSON_PRETTY_PRINT);
+});
+
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
