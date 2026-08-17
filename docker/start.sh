@@ -72,7 +72,9 @@ php artisan migrate --force --no-interaction || { echo "Migration warning/error.
 php artisan db:seed --class=DatabaseSeeder --force --no-interaction || true
 php artisan storage:link --force 2>/dev/null || true
 php artisan optimize:clear 2>/dev/null || true
-php artisan view:clear 2>/dev/null || true
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
 
 echo "Starting Nginx & PHP-FPM via Supervisord..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
