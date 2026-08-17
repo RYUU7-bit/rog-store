@@ -1416,3 +1416,310 @@ footer { background: #080808; border-top: 1px solid #1e1e1e; }
   .rog-ai-btn-label { display: none; }
   #rog-ai-btn { border-radius: 50%; padding: .75rem; }
 }
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM QUALITY ENHANCEMENTS
+   Page transitions · Scroll animations · Loading states
+   Image polish · Micro-interactions · Reduced motion
+══════════════════════════════════════════════════════ */
+
+/* ─── Page Enter Animation ─────────────────────────── */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+main {
+  animation: pageEnter .45s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* ─── Scroll Reveal ────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .6s cubic-bezier(.16,1,.3,1),
+              transform .6s cubic-bezier(.16,1,.3,1);
+}
+[data-reveal="left"]  { transform: translateX(-32px); }
+[data-reveal="right"] { transform: translateX(32px); }
+[data-reveal="scale"] { transform: scale(.94); }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delay helpers */
+[data-delay="1"] { transition-delay: .08s; }
+[data-delay="2"] { transition-delay: .16s; }
+[data-delay="3"] { transition-delay: .24s; }
+[data-delay="4"] { transition-delay: .32s; }
+[data-delay="5"] { transition-delay: .40s; }
+[data-delay="6"] { transition-delay: .48s; }
+
+/* ─── Hero Slide Content Stagger ───────────────────── */
+.slide.active .slide-badge,
+.slide.active .slide-eyebrow {
+  animation: slideContentIn .55s .10s cubic-bezier(.16,1,.3,1) both;
+}
+.slide.active h1,
+.slide.active .slide-title {
+  animation: slideContentIn .55s .22s cubic-bezier(.16,1,.3,1) both;
+}
+.slide.active p,
+.slide.active .slide-desc {
+  animation: slideContentIn .55s .34s cubic-bezier(.16,1,.3,1) both;
+}
+.slide.active .slide-cta,
+.slide.active .slide-actions {
+  animation: slideContentIn .55s .46s cubic-bezier(.16,1,.3,1) both;
+}
+.slide.active .slide-price {
+  animation: slideContentIn .55s .28s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes slideContentIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Navbar scroll shrink ─────────────────────────── */
+.navbar.scrolled {
+  height: 52px !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,.4);
+}
+
+/* ─── Image lazy-load fade-in ──────────────────────── */
+img.lazy {
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+img.lazy.loaded {
+  opacity: 1;
+}
+
+/* ─── Button loading spinner ───────────────────────── */
+.btn-loading {
+  pointer-events: none;
+  opacity: .75;
+  position: relative;
+}
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  right: 12px; top: 50%;
+  width: 14px; height: 14px;
+  margin-top: -7px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Form submit loading ──────────────────────────── */
+.form-submitting { pointer-events: none; opacity: .7; }
+
+/* ─── Product card — shimmer on hover ──────────────── */
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 40%,
+    rgba(229,0,30,.06) 50%,
+    transparent 60%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  transition: background-position .5s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+.product-card:hover::before {
+  background-position: -200% 0;
+}
+
+/* ─── Smooth image zoom on product cards ───────────── */
+.product-card img {
+  will-change: transform;
+}
+
+/* ─── Section title reveal line ────────────────────── */
+.section-title::after {
+  transition: width .6s cubic-bezier(.16,1,.3,1);
+  width: 0;
+}
+.section-title.is-visible::after {
+  width: 60%;
+}
+
+/* ─── Ripple effect on buttons ─────────────────────── */
+.btn-rog,
+.btn-rog-outline {
+  overflow: hidden;
+}
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  width: 4px; height: 4px;
+  margin-top: -2px; margin-left: -2px;
+  animation: rippleOut .55s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes rippleOut {
+  to { transform: scale(60); opacity: 0; }
+}
+
+/* ─── Smooth focus ring everywhere ─────────────────── */
+:focus-visible {
+  outline: 2px solid var(--rog-red);
+  outline-offset: 2px;
+}
+
+/* ─── Tooltip utility ──────────────────────────────── */
+[data-tip] {
+  position: relative;
+}
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #1a1a1a;
+  color: #e0e0e0;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .3rem .6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s, transform .2s;
+  z-index: 9999;
+  border: 1px solid #2a2a2a;
+}
+[data-tip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ─── Smooth page link transitions ─────────────────── */
+.page-transition-out {
+  animation: pageLeave .25s ease forwards;
+}
+@keyframes pageLeave {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ─── Card glow on focus (keyboard nav) ────────────── */
+.product-card:focus-within {
+  border-color: var(--rog-red);
+  box-shadow: 0 0 0 2px rgba(var(--rog-red-rgb),.25);
+}
+
+/* ─── Smooth number counter animation ──────────────── */
+.count-up {
+  display: inline-block;
+  transition: transform .15s;
+}
+
+/* ─── Toast notification ───────────────────────────── */
+#rog-toast-container {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  pointer-events: none;
+}
+.rog-toast {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-input);
+  border-left: 3px solid var(--rog-red);
+  color: var(--text-primary);
+  padding: .75rem 1.1rem;
+  font-size: .85rem;
+  font-weight: 600;
+  min-width: 240px;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  animation: toastIn .3s cubic-bezier(.16,1,.3,1) both;
+  pointer-events: auto;
+}
+.rog-toast.toast-success { border-left-color: #22c55e; }
+.rog-toast.toast-error   { border-left-color: #ef4444; }
+.rog-toast.toast-out     { animation: toastOut .25s ease forwards; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(20px); }
+}
+
+/* ─── Prefers reduced motion ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  main { animation: none; }
+}
+
+/* ─── Image skeleton placeholder ───────────────────── */
+.img-placeholder {
+  background: linear-gradient(90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-surface) 50%,
+    var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ─── Smooth cart count bounce ─────────────────────── */
+@keyframes cartBounce {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
+.cart-badge-bounce {
+  animation: cartBounce .3s cubic-bezier(.175,.885,.32,1.275);
+}
+
+/* ─── Better select/option styling ─────────────────── */
+select.rog-input option {
+  background: var(--bg-dropdown);
+  color: var(--text-primary);
+}
+
+/* ─── Smooth underline links ───────────────────────── */
+.link-underline {
+  background: linear-gradient(var(--rog-red), var(--rog-red)) no-repeat 0 100%;
+  background-size: 0 1px;
+  transition: background-size .25s ease;
+  padding-bottom: 1px;
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* ─── Mobile touch improvements ────────────────────── */
+@media (hover: none) {
+  .product-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .product-card:active {
+    transform: scale(.98);
+    border-color: var(--rog-red);
+  }
+  .btn-rog:active {
+    transform: scale(.96);
+    background: var(--rog-red-dark);
+  }
+}
