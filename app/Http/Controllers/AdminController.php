@@ -62,13 +62,13 @@ class AdminController extends Controller
         });
 
         // ── Today's orders (full list) ──────────────────────────────────────
-        $todayOrdersList = Order::with('items')
+        $todayOrdersList = Order::with('items.product')
                                ->whereDate('created_at', $today)
                                ->latest()
                                ->get();
 
         // ── Recent orders (last 15) ─────────────────────────────────────────
-        $recentOrders = Order::with('items')
+        $recentOrders = Order::with('items.product')
                             ->latest()
                             ->take(15)
                             ->get();
@@ -106,7 +106,7 @@ class AdminController extends Controller
 
     public function orders(Request $request)
     {
-        $query = Order::with('items')->latest();
+        $query = Order::with('items.product')->latest();
 
         if ($request->filled('search')) {
             $s = $request->search;

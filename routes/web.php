@@ -31,6 +31,9 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
 Route::post('/checkout/confirm-bakong', [CheckoutController::class, 'confirmBakong'])->name('checkout.confirm_bakong');
 Route::get('/checkout/success/{orderNumber}', [CheckoutController::class, 'success'])->name('checkout.success');
 
+// AI Text-To-Speech (Khmer & English Voice)
+Route::get('/api/ai/tts', [\App\Http\Controllers\AiController::class, 'tts'])->name('ai.tts');
+
 // BAKONG KHQR Payment
 Route::post('/bakong/generate', [BakongController::class, 'generate'])->name('bakong.generate');
 Route::post('/bakong/check',    [BakongController::class, 'check'])->name('bakong.check');
