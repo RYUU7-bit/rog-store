@@ -68,8 +68,8 @@
                     <div>
                         <form action="{{ route('cart.remove',$item) }}" method="POST">
                             @csrf @method('DELETE')
-                            <button type="submit" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:.4rem;" title="Remove" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--text-muted)'">
-                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <button type="submit" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;cursor:pointer;padding:.45rem .55rem;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .2s;" title="Remove item" onmouseover="this.style.background='rgba(239,68,68,.18)';this.style.borderColor='#ef4444'" onmouseout="this.style.background='rgba(239,68,68,.08)';this.style.borderColor='rgba(239,68,68,.2)'">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                             </button>
                         </form>
                     </div>
@@ -98,8 +98,8 @@
                         </div>
                         <form action="{{ route('cart.remove',$item) }}" method="POST">
                             @csrf @method('DELETE')
-                            <button type="submit" style="background:none; border:none; color:var(--text-muted); cursor:pointer; padding:.3rem;" title="Remove">
-                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            <button type="submit" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#ef4444;cursor:pointer;padding:.45rem .55rem;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .2s;" title="Remove item" onmouseover="this.style.background='rgba(239,68,68,.18)'" onmouseout="this.style.background='rgba(239,68,68,.08)'">
+                                <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                             </button>
                         </form>
                     </div>

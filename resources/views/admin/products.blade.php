@@ -95,13 +95,13 @@
                     </td>
                     <td style="text-align:center;white-space:nowrap;">
                         <a href="{{ route('admin.products.edit', $product) }}"
-                           style="display:inline-flex;align-items:center;gap:.3rem;background:#e5001e;color:#fff;border:none;padding:.3rem .8rem;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none;letter-spacing:.04em;transition:background .15s;"
+                           style="display:inline-flex;align-items:center;gap:.3rem;background:#e5001e;color:#fff;border:none;padding:.35rem .85rem;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none;letter-spacing:.04em;transition:background .15s;"
                            onmouseover="this.style.background='#b0001a'" onmouseout="this.style.background='#e5001e'">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                             Edit
                         </a>
                         <a href="{{ route('product.show', $product->slug) }}" target="_blank"
-                           style="display:inline-flex;align-items:center;gap:.3rem;background:var(--adm-surface2);color:var(--adm-muted);border:1px solid var(--adm-border);padding:.3rem .7rem;border-radius:5px;font-size:.75rem;font-weight:600;text-decoration:none;margin-left:.3rem;transition:border-color .15s;"
+                           style="display:inline-flex;align-items:center;gap:.3rem;background:var(--adm-surface2);color:var(--adm-muted);border:1px solid var(--adm-border);padding:.35rem .75rem;border-radius:5px;font-size:.75rem;font-weight:600;text-decoration:none;margin-left:.3rem;transition:border-color .15s;"
                            onmouseover="this.style.borderColor='#e5001e';this.style.color='#e5001e'" onmouseout="this.style.borderColor='var(--adm-border)';this.style.color='var(--adm-muted)'">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                             View

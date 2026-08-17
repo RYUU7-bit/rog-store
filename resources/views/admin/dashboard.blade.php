@@ -307,7 +307,10 @@
                     <td><span class="adm-status adm-status--{{ $order->status }}">{{ $order->status }}</span></td>
                     <td style="font-size:.75rem;color:var(--adm-muted);white-space:nowrap;">{{ $order->created_at->format('M j, H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.orders.show', $order) }}" style="font-size:.75rem;color:#e5001e;text-decoration:none;white-space:nowrap;">View →</a>
+                        <a href="{{ route('admin.orders.show', $order) }}" style="display:inline-flex;align-items:center;gap:.25rem;background:var(--adm-surface2);color:#e5001e;border:1px solid rgba(229,0,30,.3);padding:.28rem .65rem;border-radius:5px;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .15s;" onmouseover="this.style.background='rgba(229,0,30,.1)'" onmouseout="this.style.background='var(--adm-surface2)'">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            View
+                        </a>
                     </td>
                 </tr>
                 @endforeach
