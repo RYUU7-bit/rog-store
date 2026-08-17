@@ -10,21 +10,21 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: "false"
+        value: "true"
       - key: APP_KEY
         generateValue: true
       - key: APP_URL
         value: https://rog-store.onrender.com
       - key: LOG_LEVEL
-        value: error
+        value: debug
       - key: SESSION_DRIVER
-        value: database
+        value: file
       - key: SESSION_LIFETIME
         value: "120"
       - key: SESSION_SECURE_COOKIE
         value: "false"
       - key: CACHE_STORE
-        value: database
+        value: file
       - key: BAKONG_API_URL
         value: https://api-bakong.nbc.gov.kh
       - key: BAKONG_ACCOUNT_ID

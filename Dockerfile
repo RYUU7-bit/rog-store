@@ -63,7 +63,7 @@ COPY docker/nginx.conf       /etc/nginx/http.d/default.conf
 COPY docker/php-fpm.conf     /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/start.sh         /start.sh
-# cache-bust: 2026-08-17-php-fpm-env-fix-v3
+# cache-bust: 2026-08-17-session-file-v4
 RUN chmod +x /start.sh
 
 EXPOSE 10000
