@@ -1,0 +1,21 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="audioGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#2a0d24" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070512" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#audioGlow)"/>
+  <!-- Headband -->
+  <path d="M 180 230 C 180 80 420 80 420 230" stroke="#1c1736" stroke-width="22" stroke-linecap="round" fill="none"/>
+  <path d="M 190 220 C 190 95 410 95 410 220" stroke="#e5001e" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- D-Shaped Earcups with AniMe Matrix -->
+  <polygon points="150,180 210,190 200,280 140,270" fill="#120e24" stroke="#ff0055" stroke-width="2"/>
+  <polygon points="450,180 390,190 400,280 460,270" fill="#120e24" stroke="#ff0055" stroke-width="2"/>
+  <!-- AniMe Matrix Dots -->
+  <g fill="#00f0ff" opacity="0.9">
+    <circle cx="170" cy="220" r="2.5"/><circle cx="180" cy="220" r="2.5"/><circle cx="175" cy="230" r="2.5"/><circle cx="185" cy="230" r="2.5"/>
+    <circle cx="420" cy="220" r="2.5"/><circle cx="430" cy="220" r="2.5"/><circle cx="415" cy="230" r="2.5"/><circle cx="425" cy="230" r="2.5"/>
+  </g>
+  <text x="300" y="365" font-family="'Orbitron', sans-serif" font-size="13" font-weight="900" fill="#ff4d6d" text-anchor="middle" letter-spacing="2">ROG DELTA S ANIMATE // ESS 9281 QUAD DAC HEADSET</text>
+</svg>

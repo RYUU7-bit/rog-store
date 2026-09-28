@@ -1,0 +1,17 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="caseGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#14112e" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070512" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#caseGlow)"/>
+  <!-- Aluminum X-Frame Handles -->
+  <path d="M 180 330 L 210 60 L 390 60 L 420 330 Z" fill="#120e24" stroke="#7000ff" stroke-width="3"/>
+  <path d="M 170 50 L 220 50 L 200 340 L 160 340 Z" fill="#e5001e"/>
+  <path d="M 430 50 L 380 50 L 400 340 L 440 340 Z" fill="#e5001e"/>
+  <!-- Tempered Glass Window -->
+  <rect x="220" y="80" width="160" height="230" rx="8" fill="#06040d" stroke="#00f0ff" stroke-width="1.5"/>
+  <circle cx="300" cy="190" r="45" fill="none" stroke="#ff0055" stroke-width="2"/>
+  <text x="300" y="375" font-family="'Orbitron', sans-serif" font-size="13" font-weight="900" fill="#e5001e" text-anchor="middle" letter-spacing="2">ROG HYPERION GR701 // DUAL 420MM RADIATOR CHASSIS</text>
+</svg>

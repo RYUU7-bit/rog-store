@@ -11,10 +11,10 @@
         <div style="position:relative; width:100px; height:100px; margin:0 auto 1.5rem; display:flex; align-items:center; justify-content:center; perspective:800px;">
             <div class="rog-8k-ring" style="--pod-color:#22c55e; inset:-8px;"></div>
             <div class="rog-8k-ring-rev" style="--pod-color-2:#00f0ff; inset:-14px;"></div>
-            
+
             <div style="width:84px; height:84px; border-radius:50%; background:radial-gradient(circle at 35% 30%, rgba(34,197,94,0.3) 0%, rgba(10,8,20,0.95) 75%); border:2px solid #22c55e; display:flex; align-items:center; justify-content:center; box-shadow:0 0 35px rgba(34,197,94,0.6), inset 0 0 20px rgba(34,197,94,0.4); z-index:2;">
                 <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 10px #22c55e);">
-                    <polyline points="20 6 9 17 4 12"/>
+                    <polyline points="20 6 9 17 4 12" />
                 </svg>
             </div>
         </div>
@@ -28,7 +28,7 @@
         <h1 style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(1.8rem,4vw,2.8rem); color:#fff; text-transform:uppercase; letter-spacing:.05em; margin:0 0 .6rem; text-shadow:0 0 25px rgba(34,197,94,0.3);">
             Thank You, <span style="color:#22c55e;">{{ $order->first_name }}!</span>
         </h1>
-        
+
         <p style="color:#94a3b8; font-size:.96rem; max-width:540px; margin:0 auto 1.4rem; line-height:1.6; font-family:'Rajdhani',sans-serif; font-weight:600;">
             Your ROG battle order has been verified with instantaneous clearance. Hardware serial numbers are being reserved from the vault.
         </p>
@@ -62,7 +62,7 @@
 
         {{-- 4-Stage Stepper Track --}}
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:.8rem; position:relative;" class="delivery-steps-grid">
-            
+
             {{-- Step 1: Cleared --}}
             <div style="text-align:center; position:relative;">
                 <div style="width:40px; height:40px; border-radius:50%; background:#22c55e; color:#000; font-weight:900; font-size:1.1rem; display:flex; align-items:center; justify-content:center; margin:0 auto .6rem; box-shadow:0 0 16px rgba(34,197,94,0.7);">
@@ -132,13 +132,13 @@
         <div style="padding:1rem 1.8rem;">
             @foreach($order->items as $item)
             @php
-                $itemKHR = $item->total * 4050;
+            $itemKHR = $item->total * 4050;
             @endphp
             <div style="display:flex; gap:1.2rem; padding:1.2rem 0; border-bottom:1px solid rgba(147,51,234,0.15); align-items:center;">
                 <div style="width:78px; height:68px; background:rgba(8,7,16,0.9); border:1px solid rgba(147,51,234,0.3); border-radius:8px; padding:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
                     <img src="{{ $item->product->image ?? '' }}" alt="{{ $item->product_name }}"
-                         style="width:100%; height:100%; object-fit:contain;"
-                         onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=150&q=60'">
+                        style="width:100%; height:100%; object-fit:contain;"
+                        onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=150&q=60'">
                 </div>
                 <div style="flex:1; min-width:0;">
                     <div style="font-weight:700; color:#fff; font-size:.94rem; margin-bottom:.25rem; font-family:'Rajdhani',sans-serif;">
@@ -236,95 +236,103 @@
 
 {{-- AI Personalized Audio Voice Thank You Trigger --}}
 <script>
-var currentSuccessAudio = null;
+    var currentSuccessAudio = null;
 
-function playThankYouVoice(lang) {
-    if (currentSuccessAudio) {
-        currentSuccessAudio.pause();
-        currentSuccessAudio = null;
-    }
-
-    var avatar = document.getElementById('rogAiVoiceAvatar');
-
-    var text = '';
-    if (lang === 'kh') {
-        text = 'សូមអរគុណច្រើនបង {{ addslashes($order->first_name) }}! ការទូទាត់ប្រាក់សម្រាប់កុម្ម៉ង់លេខ {{ $order->order_number }} ត្រូវបានជោគជ័យ ១០០% ហើយ។ ក្រុមការងារ ROG Store នឹងរៀបចំផ្ញើទំនិញជូនបងក្នុងរយៈពេល ២៤ ម៉ោង។ សូមអរគុណបង {{ addslashes($order->first_name) }}!';
-    } else {
-        text = 'Thank you {{ addslashes($order->first_name) }}! Your payment for ROG Order {{ $order->order_number }} has been confirmed with instant clearance. Your gaming gear is now being packed and dispatched. Thank you for choosing Republic of Gamers!';
-    }
-
-    var ttsUrl = '/api/ai/tts?lang=' + encodeURIComponent(lang === 'kh' ? 'km' : 'en') + '&text=' + encodeURIComponent(text);
-    var audio = new Audio(ttsUrl);
-    currentSuccessAudio = audio;
-    audio.volume = 0.95;
-
-    if (avatar) {
-        avatar.style.transform = 'scale(1.15)';
-        avatar.style.boxShadow = '0 0 20px #00f0ff';
-        avatar.style.borderColor = '#22c55e';
-    }
-
-    audio.onended = function () {
-        if (avatar) {
-            avatar.style.transform = 'scale(1)';
-            avatar.style.boxShadow = '0 0 12px rgba(0,240,255,0.5)';
-            avatar.style.borderColor = '#00f0ff';
+    function playThankYouVoice(lang) {
+        if (currentSuccessAudio) {
+            currentSuccessAudio.pause();
+            currentSuccessAudio = null;
         }
-        currentSuccessAudio = null;
-    };
 
-    audio.onerror = function () {
-        if (avatar) {
-            avatar.style.transform = 'scale(1)';
-            avatar.style.boxShadow = '0 0 12px rgba(0,240,255,0.5)';
-            avatar.style.borderColor = '#00f0ff';
+        var avatar = document.getElementById('rogAiVoiceAvatar');
+
+        var text = '';
+        if (lang === 'kh') {
+            text = 'សូមអរគុណច្រើនបង {{ addslashes($order->first_name) }}! ការទូទាត់ប្រាក់សម្រាប់កុម្ម៉ង់លេខ {{ $order->order_number }} ត្រូវបានជោគជ័យ ១០០% ហើយ។ ក្រុមការងារ ROG Store នឹងរៀបចំផ្ញើទំនិញជូនបងក្នុងរយៈពេល ២៤ ម៉ោង។ សូមអរគុណបង {{ addslashes($order->first_name) }}!';
+        } else {
+            text = 'Thank you {{ addslashes($order->first_name) }}! Your payment for ROG Order {{ $order->order_number }} has been confirmed with instant clearance. Your gaming gear is now being packed and dispatched. Thank you for choosing Republic of Gamers!';
         }
-        currentSuccessAudio = null;
-    };
 
-    var p = audio.play();
-    if (p !== undefined) {
-        p.catch(function (e) {
-            console.log('Autoplay restriction, user can click button:', e);
-        });
+        var ttsUrl = '/api/ai/tts?lang=' + encodeURIComponent(lang === 'kh' ? 'km' : 'en') + '&text=' + encodeURIComponent(text);
+        var audio = new Audio(ttsUrl);
+        currentSuccessAudio = audio;
+        audio.volume = 0.95;
+
+        if (avatar) {
+            avatar.style.transform = 'scale(1.15)';
+            avatar.style.boxShadow = '0 0 20px #00f0ff';
+            avatar.style.borderColor = '#22c55e';
+        }
+
+        audio.onended = function() {
+            if (avatar) {
+                avatar.style.transform = 'scale(1)';
+                avatar.style.boxShadow = '0 0 12px rgba(0,240,255,0.5)';
+                avatar.style.borderColor = '#00f0ff';
+            }
+            currentSuccessAudio = null;
+        };
+
+        audio.onerror = function() {
+            if (avatar) {
+                avatar.style.transform = 'scale(1)';
+                avatar.style.boxShadow = '0 0 12px rgba(0,240,255,0.5)';
+                avatar.style.borderColor = '#00f0ff';
+            }
+            currentSuccessAudio = null;
+        };
+
+        var p = audio.play();
+        if (p !== undefined) {
+            p.catch(function(e) {
+                console.log('Autoplay restriction, user can click button:', e);
+            });
+        }
+
+        if (window.rogToast) {
+            var msg = lang === 'kh' ? '🔊 AI កំពុងថ្លែងអំណរគុណបង {{ addslashes($order->first_name) }}...' : '🔊 AI Speaking: Thank you {{ addslashes($order->first_name) }}!';
+            window.rogToast(msg, 'success', 3000);
+        }
     }
 
-    if (window.rogToast) {
-        var msg = lang === 'kh' ? '🔊 AI កំពុងថ្លែងអំណរគុណបង {{ addslashes($order->first_name) }}...' : '🔊 AI Speaking: Thank you {{ addslashes($order->first_name) }}!';
-        window.rogToast(msg, 'success', 3000);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Automatically play personalized Khmer voice thank you on load after 400ms
-    setTimeout(function () {
-        playThankYouVoice('kh');
-    }, 400);
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        // Automatically play personalized Khmer voice thank you on load after 400ms
+        setTimeout(function() {
+            playThankYouVoice('kh');
+        }, 400);
+    });
 </script>
 
 <style>
-@media print {
-  body * { visibility: hidden; }
-  #rogPrintableReceipt, #rogPrintableReceipt * { visibility: visible; }
-  #rogPrintableReceipt {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    background: #fff !important;
-    color: #000 !important;
-    border: 1px solid #ccc !important;
-  }
-}
+    @media print {
+        body * {
+            visibility: hidden;
+        }
 
-@media(max-width:768px) {
-  .delivery-steps-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  .receipt-dossier-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
+        #rogPrintableReceipt,
+        #rogPrintableReceipt * {
+            visibility: visible;
+        }
+
+        #rogPrintableReceipt {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: #fff !important;
+            color: #000 !important;
+            border: 1px solid #ccc !important;
+        }
+    }
+
+    @media(max-width:768px) {
+        .delivery-steps-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .receipt-dossier-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
 </style>
 @endsection

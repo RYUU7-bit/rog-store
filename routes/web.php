@@ -45,9 +45,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/orders/{order}', [AdminController::class, 'orderShow'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminController::class, 'orderStatus'])->name('orders.status');
 
-    // Products
-    Route::get('/products',              [AdminController::class, 'products'])->name('products');
-    Route::get('/products/{product}/edit',[AdminController::class, 'productEdit'])->name('products.edit');
-    Route::put('/products/{product}',    [AdminController::class, 'productUpdate'])->name('products.update');
-    Route::patch('/products/{product}/toggle', [AdminController::class, 'productToggle'])->name('products.toggle');
+    // Products Management
+    Route::get('/products',                   [AdminController::class, 'products'])->name('products');
+    Route::get('/products/create',            [AdminController::class, 'productCreate'])->name('products.create');
+    Route::post('/products',                  [AdminController::class, 'productStore'])->name('products.store');
+    Route::get('/products/{product}/json',    [AdminController::class, 'productJson'])->name('products.json');
+    Route::get('/products/{product}/edit',    [AdminController::class, 'productEdit'])->name('products.edit');
+    Route::put('/products/{product}',         [AdminController::class, 'productUpdate'])->name('products.update');
+    Route::patch('/products/{product}/toggle',[AdminController::class, 'productToggle'])->name('products.toggle');
+    Route::patch('/products/{product}/toggle-featured', [AdminController::class, 'productToggleFeatured'])->name('products.toggle_featured');
+    Route::post('/products/{product}/quick-stock',      [AdminController::class, 'productQuickStock'])->name('products.quick_stock');
+    Route::delete('/products/{product}',      [AdminController::class, 'productDestroy'])->name('products.destroy');
 });

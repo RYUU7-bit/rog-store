@@ -65,7 +65,8 @@
                             <div style="position:relative; width:44px; height:44px; border-radius:8px; background:rgba(0,0,0,0.6); border:1.5px solid rgba(147,51,234,0.4); overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,0.5); flex-shrink:0;"
                                  title="{{ $item->product_name }} (Qty: {{ $item->quantity }})">
                                 @if($item->product && $item->product->image)
-                                    <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}" style="width:100%; height:100%; object-fit:contain; padding:2px; transition:transform .2s;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'">
+                                    <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}" style="width:100%; height:100%; object-fit:contain; padding:2px; transition:transform .2s;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'"
+                                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
                                 @else
                                     <div style="font-size:1.1rem;">💻</div>
                                 @endif

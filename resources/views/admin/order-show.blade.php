@@ -151,9 +151,10 @@
                     <div style="display:flex; align-items:center; gap:1.3rem;">
                         <div style="position:relative; width:88px; height:88px; border-radius:14px; background:radial-gradient(circle, rgba(229,0,30,0.25) 0%, rgba(20,16,40,0.95) 75%); border:2px solid rgba(229,0,30,0.6); overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(229,0,30,0.3), inset 0 0 15px rgba(229,0,30,0.2); flex-shrink:0;">
                             @if($item->product && $item->product->image)
-                                <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}"
+                                <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}"
                                      style="width:100%; height:100%; object-fit:contain; padding:6px; filter:drop-shadow(0 0 12px rgba(255,255,255,0.3)); transition:transform .3s;"
-                                     onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                     onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"
+                                     onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
                             @else
                                 <div style="font-size:2.2rem; filter:drop-shadow(0 0 10px rgba(147,51,234,0.6));">💻</div>
                             @endif

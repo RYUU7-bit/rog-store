@@ -1,0 +1,19 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="psuGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#141c2c" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070512" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#psuGlow)"/>
+  <!-- PSU Block -->
+  <rect x="140" y="100" width="320" height="200" rx="12" fill="#0d0b1a" stroke="#00f0ff" stroke-width="2"/>
+  <!-- OLED Power Meter Screen -->
+  <rect x="170" y="130" width="130" height="70" rx="6" fill="#030206" stroke="#e5001e" stroke-width="1.5"/>
+  <text x="235" y="165" font-family="'Orbitron', sans-serif" font-size="20" font-weight="900" fill="#00f0ff" text-anchor="middle">850 W</text>
+  <text x="235" y="185" font-family="'Orbitron', sans-serif" font-size="10" font-weight="700" fill="#22c55e" text-anchor="middle">LIVE DRAW: 94.2% EFF</text>
+  <!-- Fan Grille -->
+  <circle cx="375" cy="200" r="60" fill="#070512" stroke="#7000ff" stroke-width="2"/>
+  <circle cx="375" cy="200" r="25" fill="#141124" stroke="#00f0ff" stroke-width="1.5"/>
+  <text x="300" y="355" font-family="'Orbitron', sans-serif" font-size="14" font-weight="900" fill="#38bdf8" text-anchor="middle" letter-spacing="2">ROG THOR 1600T // 80 PLUS TITANIUM OLED PSU</text>
+</svg>

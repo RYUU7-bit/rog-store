@@ -20,7 +20,7 @@
 </div>
 @endif
 
-<form method="POST" action="{{ route('admin.products.update', $product) }}">
+<form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
     @csrf @method('PUT')
 
     <div style="display:grid;grid-template-columns:1fr 320px;gap:1.2rem;align-items:start;">
@@ -64,8 +64,8 @@
                     <div>
                         <label style="display:block;font-size:.72rem;color:var(--adm-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.4rem;">Short Description</label>
                         <input type="text" name="short_description" value="{{ old('short_description', $product->short_description) }}" maxlength="500"
-                               style="width:100%;background:var(--adm-surface2);border:1px solid var(--adm-border);color:var(--adm-text);padding:.55rem .9rem;border-radius:6px;font-size:.88rem;outline:none;font-family:'Rajdhani',sans-serif;transition:border-color .15s;"
-                               onfocus="this.style.borderColor='#e5001e'" onblur="this.style.borderColor='var(--adm-border)'">
+                                style="width:100%;background:var(--adm-surface2);border:1px solid var(--adm-border);color:var(--adm-text);padding:.55rem .9rem;border-radius:6px;font-size:.88rem;outline:none;font-family:'Rajdhani',sans-serif;transition:border-color .15s;"
+                                onfocus="this.style.borderColor='#e5001e'" onblur="this.style.borderColor='var(--adm-border)'">
                     </div>
 
                     <div>
@@ -132,17 +132,27 @@
             {{-- Image --}}
             <div class="adm-card">
                 <div class="adm-card-header"><span class="adm-card-title">🖼 Product Image</span></div>
-                <div style="padding:1.2rem;display:flex;gap:1rem;align-items:flex-start;">
-                    <img id="img-preview" src="{{ $product->image }}" alt="Preview"
-                         style="width:100px;height:84px;object-fit:contain;background:var(--adm-surface2);border:1px solid var(--adm-border);border-radius:6px;padding:6px;flex-shrink:0;"
-                         onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=200&q=60'">
-                    <div style="flex:1;">
-                        <label style="display:block;font-size:.72rem;color:var(--adm-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.4rem;">Image URL</label>
-                        <input type="url" name="image" id="image-url" value="{{ old('image', $product->image) }}" placeholder="https://…"
-                               style="width:100%;background:var(--adm-surface2);border:1px solid var(--adm-border);color:var(--adm-text);padding:.55rem .9rem;border-radius:6px;font-size:.82rem;outline:none;font-family:monospace;transition:border-color .15s;"
-                               onfocus="this.style.borderColor='#e5001e'" onblur="this.style.borderColor='var(--adm-border)'"
-                               oninput="document.getElementById('img-preview').src=this.value||'https://images.unsplash.com/photo-1593640408182-31c228034c55?w=200&q=60'">
-                        <div style="font-size:.72rem;color:var(--adm-muted);margin-top:.3rem;">Paste a direct image URL. Preview updates as you type.</div>
+                <div style="padding:1.2rem;display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;">
+                    <div style="position:relative;width:120px;height:100px;background:var(--adm-surface2);border:1px solid var(--adm-border);border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <img id="img-preview" src="{{ $product->image }}" alt="Preview"
+                             style="max-width:100%;max-height:100%;object-fit:contain;"
+                             onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                    </div>
+                    <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:.8rem;">
+                        <div>
+                            <label style="display:block;font-size:.72rem;color:var(--adm-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.4rem;">Image URL / Local Path</label>
+                            <input type="text" name="image" id="image-url" value="{{ old('image', $product->getRawOriginal('image') ?? $product->image) }}" placeholder="images/products/... or https://…"
+                                   style="width:100%;background:var(--adm-surface2);border:1px solid var(--adm-border);color:var(--adm-text);padding:.55rem .9rem;border-radius:6px;font-size:.82rem;outline:none;font-family:monospace;transition:border-color .15s;"
+                                   onfocus="this.style.borderColor='#e5001e'" onblur="this.style.borderColor='var(--adm-border)'"
+                                   oninput="updateImagePreview(this.value)">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:.72rem;color:var(--adm-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.4rem;">Or Upload New Image File</label>
+                            <input type="file" name="image_file" id="image-file" accept="image/*"
+                                   style="width:100%;background:var(--adm-surface2);border:1px solid var(--adm-border);color:var(--adm-text);padding:.4rem .8rem;border-radius:6px;font-size:.8rem;outline:none;"
+                                   onchange="previewUploadedFile(this)">
+                            <div style="font-size:.7rem;color:var(--adm-muted);margin-top:.25rem;">Supports JPG, PNG, WEBP, SVG (Max: 5MB)</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -314,6 +324,29 @@ function updateToggle(inputId, trackId) {
     var color = inputId === 'is_active' ? '#22c55e' : '#e5001e';
     track.style.background = cb.checked ? color : 'var(--adm-border)';
     thumb.style.transform  = cb.checked ? 'translateX(22px)' : 'translateX(3px)';
+}
+
+function updateImagePreview(val) {
+    var preview = document.getElementById('img-preview');
+    if (!val) {
+        preview.src = '{{ asset("images/product-fallback.svg") }}';
+        return;
+    }
+    if (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('/')) {
+        preview.src = val;
+    } else {
+        preview.src = '{{ asset("") }}' + val.replace(/^\/+/, '');
+    }
+}
+
+function previewUploadedFile(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('img-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 // Init discount on load

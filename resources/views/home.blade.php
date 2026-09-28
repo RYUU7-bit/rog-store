@@ -388,7 +388,7 @@
                 <div class="badge-featured">Featured</div>
                 <a href="{{ route('product.show',$product->slug) }}">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}" loading="lazy"
-                         onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=400&q=60'">
+                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
                 </a>
                 <div class="product-card-body" style="padding:1rem;">
                     <div style="font-size:.7rem; color:var(--rog-red); font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem;">{{ $product->category->name }}</div>
@@ -488,7 +488,7 @@
             <div style="position:absolute; top:10px; left:10px; background:#00a651; color:#fff; font-size:.65rem; font-weight:700; padding:2px 8px; text-transform:uppercase; z-index:2; border-radius:3px;">NEW</div>
             <a href="{{ route('product.show',$product->slug) }}">
                 <img src="{{ $product->image }}" alt="{{ $product->name }}" loading="lazy"
-                     onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=400&q=60'">
+                     onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
             </a>
             <div class="product-card-body" style="padding:1rem;">
                 <div style="font-size:.7rem; color:var(--rog-red); font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem;">{{ $product->category->name }}</div>
@@ -524,7 +524,7 @@
                 <div class="badge-sale">-{{ $product->discount_percent }}%</div>
                 <a href="{{ route('product.show',$product->slug) }}" style="flex-shrink:0;">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}" loading="lazy" style="width:110px; height:90px; object-fit:contain; background:#0d0d0d; padding:8px;"
-                         onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=200&q=60'">
+                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
                 </a>
                 <div style="padding:.5rem 1rem; flex:1; min-width:0;">
                     <div style="font-size:.68rem; color:var(--rog-red); font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.2rem;">{{ $product->category->name }}</div>

@@ -1,0 +1,27 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="gpuGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3d0a20" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070512" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="liquidLoop" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e5001e"/>
+      <stop offset="50%" stop-color="#ff0055"/>
+      <stop offset="100%" stop-color="#7000ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#gpuGlow)"/>
+  <!-- Shroud Frame -->
+  <rect x="100" y="110" width="400" height="190" rx="14" fill="#141124" stroke="url(#liquidLoop)" stroke-width="3"/>
+  <!-- Liquid Metal Chamber window -->
+  <rect x="130" y="135" width="180" height="140" rx="10" fill="#080710" stroke="#e5001e" stroke-width="1.5"/>
+  <circle cx="220" cy="205" r="50" fill="none" stroke="#ff0055" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- Fans & Cooler -->
+  <rect x="330" y="135" width="140" height="140" rx="10" fill="#080710" stroke="#7000ff" stroke-width="1.5"/>
+  <circle cx="400" cy="205" r="45" fill="none" stroke="#c084fc" stroke-width="2"/>
+  <polygon points="390,195 410,195 400,225" fill="#e5001e"/>
+  <!-- 360mm AIO Liquid Tubes -->
+  <path d="M 120 120 Q 80 50 200 40 Q 350 30 460 70" stroke="#e5001e" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M 140 120 Q 90 70 210 60 Q 350 50 480 85" stroke="#7000ff" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <text x="300" y="360" font-family="'Orbitron', sans-serif" font-size="14" font-weight="900" fill="#ff4d6d" text-anchor="middle" letter-spacing="2">ROG MATRIX PLATINUM RTX 4090 // 24GB LIQUID METAL</text>
+</svg>

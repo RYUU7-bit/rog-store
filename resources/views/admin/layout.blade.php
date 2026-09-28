@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title','Command Deck') — ROG Store Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700;800&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
@@ -20,13 +21,21 @@
             --rog-red: #e5001e;
         }
         * { box-sizing:border-box; margin:0; padding:0; }
+        html, body {
+            height: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         body {
             background: var(--adm-bg);
             color: var(--adm-text);
             font-family: 'Rajdhani', sans-serif;
             display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
         }
 
         /* ─── 8D Holographic Animation Keyframes ───────────────────────────── */
@@ -128,6 +137,9 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
         }
         .adm-brand {
@@ -261,11 +273,15 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            max-height: 100vh;
             min-width: 0;
+            min-height: 0;
             overflow: hidden;
             position: relative;
         }
         .adm-topbar {
+            flex-shrink: 0;
             background: var(--adm-surface);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--adm-border);
@@ -300,13 +316,6 @@
             padding: 2px 8px;
             border-radius: 10px;
             box-shadow: 0 0 8px rgba(229,0,30,0.6);
-        }
-        .adm-content {
-            flex: 1;
-            padding: 1.8rem;
-            overflow-y: auto;
-            position: relative;
-            z-index: 10;
         }
 
         /* ─── Cyber HUD Cards ───────────────────────────────────────────────── */
@@ -511,7 +520,9 @@
 
         /* ─── Content Scroll Viewport ───────────────────────────────────────── */
         .adm-content {
-            flex: 1;
+            flex: 1 1 0%;
+            height: 0;
+            min-height: 0;
             padding: 1.8rem;
             overflow-y: auto;
             overflow-x: hidden;
@@ -519,7 +530,6 @@
             z-index: 10;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
         }
 
         /* ─── Floating Quick Scroll HUD Dock ────────────────────────────────── */
@@ -615,9 +625,13 @@
             Today's Feed
         </a>
         <div class="adm-nav-label">Inventory</div>
-        <a href="{{ route('admin.products') }}" class="{{ request()->routeIs('admin.products*') ? 'active' : '' }}">
+        <a href="{{ route('admin.products') }}" class="{{ request()->routeIs('admin.products') ? 'active' : '' }}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
             Hardware Grid
+        </a>
+        <a href="{{ route('admin.products.create') }}" class="{{ request()->routeIs('admin.products.create') ? 'active' : '' }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            + Add Hardware
         </a>
     </nav>
     <div class="adm-sidebar-footer">
@@ -660,59 +674,57 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const content = document.getElementById('admMainContent') || window;
+    const content = document.getElementById('admMainContent');
     const dock = document.getElementById('admScrollDock');
     const pctLabel = document.getElementById('admScrollPct');
     const btnTop = document.getElementById('admScrollTop');
     const btnBottom = document.getElementById('admScrollBottom');
+    const topbar = document.querySelector('.adm-topbar');
+
+    if (!content) return;
 
     function updateScroll() {
-        const target = (content === window) ? document.documentElement : content;
-        const scrollTop = target.scrollTop || window.scrollY || 0;
-        const scrollHeight = target.scrollHeight || document.documentElement.scrollHeight;
-        const clientHeight = target.clientHeight || window.innerHeight;
+        const scrollTop = content.scrollTop || 0;
+        const scrollHeight = content.scrollHeight || 0;
+        const clientHeight = content.clientHeight || 0;
         const maxScroll = scrollHeight - clientHeight;
 
         if (maxScroll > 60) {
             const pct = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
             if (pctLabel) pctLabel.textContent = pct + '%';
-            if (scrollTop > 80) {
+            if (scrollTop > 80 && dock) {
                 dock.classList.add('visible');
-            } else {
+            } else if (dock) {
                 dock.classList.remove('visible');
             }
-        } else {
+        } else if (dock) {
             dock.classList.remove('visible');
         }
     }
 
-    if (content === window) {
-        window.addEventListener('scroll', updateScroll, { passive: true });
-    } else {
-        content.addEventListener('scroll', updateScroll, { passive: true });
-        window.addEventListener('scroll', updateScroll, { passive: true });
+    content.addEventListener('scroll', updateScroll, { passive: true });
+
+    // Allow scrolling with mouse wheel even when hovering on topbar
+    if (topbar) {
+        topbar.addEventListener('wheel', function (e) {
+            content.scrollTop += e.deltaY;
+        }, { passive: true });
     }
 
     if (btnTop) {
         btnTop.addEventListener('click', function () {
-            if (content !== window && content.scrollTo) {
-                content.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            content.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
     if (btnBottom) {
         btnBottom.addEventListener('click', function () {
-            const scrollTargetHeight = (content !== window) ? content.scrollHeight : document.documentElement.scrollHeight;
-            if (content !== window && content.scrollTo) {
-                content.scrollTo({ top: scrollTargetHeight, behavior: 'smooth' });
-            }
-            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+            content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
         });
     }
 
-    updateScroll();
+    // Initial check
+    setTimeout(updateScroll, 100);
 });
 </script>
 

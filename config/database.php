@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------
@@ -97,6 +97,10 @@ return [
             'prefix_indexes' => true,
             'search_path'    => 'public',
             'sslmode'        => env('DB_SSLMODE', 'require'),
+            'options'        => extension_loaded('pdo_pgsql') ? [
+                \PDO::ATTR_TIMEOUT => 4,
+            ] : [],
+            'connect_timeout' => 4,
         ],
 
         'sqlsrv' => [

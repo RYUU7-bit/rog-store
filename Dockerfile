@@ -62,8 +62,9 @@ COPY docker/nginx.conf       /etc/nginx/http.d/default.conf
 COPY docker/php-fpm.conf     /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/start.sh         /start.sh
-# cache-bust: 2026-08-17-app-key-fix-v6
-RUN chmod +x /start.sh
+# cache-bust: 2026-09-28-render-db-fix-v2
+RUN chmod +x /start.sh \
+ && chmod -R 755 /var/www/html/docker
 
 EXPOSE 10000
 CMD ["/start.sh"]

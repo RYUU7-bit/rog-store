@@ -23,7 +23,7 @@
                 @endif
                 <img src="{{ $product->image }}" alt="{{ $product->name }}"
                      style="max-width:100%; max-height:340px; object-fit:contain;"
-                     onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=600&q=70'">
+                     onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
             </div>
         </div>
 
@@ -121,7 +121,7 @@
             <div class="product-card">
                 <a href="{{ route('product.show',$rel->slug) }}">
                     <img src="{{ $rel->image }}" alt="{{ $rel->name }}" loading="lazy"
-                         onerror="this.src='https://images.unsplash.com/photo-1593640408182-31c228034c55?w=400&q=60'">
+                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
                 </a>
                 <div class="product-card-body" style="padding:1rem;">
                     <a href="{{ route('product.show',$rel->slug) }}" style="text-decoration:none;">

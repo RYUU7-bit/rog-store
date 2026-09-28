@@ -1,0 +1,30 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#2d083b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070512" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="screenCurve" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="50%" stop-color="#7000ff"/>
+      <stop offset="100%" stop-color="#ff0055"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a2838"/>
+      <stop offset="50%" stop-color="#141124"/>
+      <stop offset="100%" stop-color="#0a0814"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" rx="16" fill="url(#bgGlow)"/>
+  <ellipse cx="300" cy="340" rx="200" ry="25" fill="#000" opacity="0.6"/>
+  <!-- Stand -->
+  <polygon points="280,240 320,240 330,340 270,340" fill="url(#metal)"/>
+  <polygon points="250,335 350,335 370,345 230,345" fill="#1c192e" stroke="#e5001e" stroke-width="1.5"/>
+  <!-- Curved Super Ultrawide 32:9 Panel -->
+  <path d="M 60 130 Q 300 110 540 130 L 530 250 Q 300 270 70 250 Z" fill="#0a0a14" stroke="#e5001e" stroke-width="2.5"/>
+  <!-- Curved OLED Screen Display -->
+  <path d="M 66 136 Q 300 116 534 136 L 525 244 Q 300 264 75 244 Z" fill="url(#screenCurve)" opacity="0.95"/>
+  <!-- Screen grid lines & ROG logo -->
+  <path d="M 280 170 L 320 170 L 300 210 Z" fill="#ffffff" opacity="0.8"/>
+  <text x="300" y="380" font-family="'Orbitron', sans-serif" font-size="14" font-weight="900" fill="#38bdf8" text-anchor="middle" letter-spacing="3">ROG SWIFT OLED PG49WCD // 49" 144Hz QD-OLED</text>
+</svg>
