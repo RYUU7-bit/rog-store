@@ -91,7 +91,7 @@
                             <img id="row-img-{{ $product->id }}" src="{{ $product->image }}" alt="{{ $product->name }}"
                                  style="width:100%; height:100%; object-fit:contain; padding:3px; transition:transform .2s;"
                                  onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"
-                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                         </div>
                     </td>
 

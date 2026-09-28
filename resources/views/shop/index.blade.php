@@ -129,7 +129,7 @@
                     @endif
                     <a href="{{ route('product.show',$product->slug) }}">
                         <img src="{{ $product->image }}" alt="{{ $product->name }}" loading="lazy"
-                             onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                             onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                     </a>
                     <div class="product-card-body" style="padding:1rem;">
                         <div style="font-size:.68rem; color:var(--rog-red); font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem;">{{ $product->category->name }}</div>

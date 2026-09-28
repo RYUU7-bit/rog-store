@@ -154,7 +154,7 @@
                                 <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}"
                                      style="width:100%; height:100%; object-fit:contain; padding:6px; filter:drop-shadow(0 0 12px rgba(255,255,255,0.3)); transition:transform .3s;"
                                      onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"
-                                     onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                     onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                             @else
                                 <div style="font-size:2.2rem; filter:drop-shadow(0 0 10px rgba(147,51,234,0.6));">💻</div>
                             @endif

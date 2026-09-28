@@ -235,7 +235,7 @@
                     <div style="width:100%; height:160px; background:rgba(0,0,0,0.6); border:1.5px dashed rgba(147,51,234,0.4); border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; box-shadow:inset 0 0 20px rgba(0,0,0,0.5);">
                         <img id="imagePreview" src="{{ asset('images/product-fallback.svg') }}" alt="Preview"
                              style="max-width:90%; max-height:90%; object-fit:contain; transition:transform .3s;"
-                             onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                             onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                     </div>
 
                     {{-- Image File Upload --}}

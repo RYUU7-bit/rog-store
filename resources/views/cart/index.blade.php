@@ -65,7 +65,7 @@
                         <a href="{{ route('product.show',$item->product->slug) }}" style="position:relative; flex-shrink:0; display:block; width:88px; height:78px; background:rgba(8,7,16,0.9); border:1.5px solid rgba(147,51,234,0.3); border-radius:8px; padding:6px; overflow:hidden; transition:border-color .2s, transform .2s;" onmouseover="this.style.borderColor='#e5001e'; this.style.transform='scale(1.04)'" onmouseout="this.style.borderColor='rgba(147,51,234,0.3)'; this.style.transform='scale(1)'">
                             <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
                                  style="width:100%; height:100%; object-fit:contain;"
-                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                         </a>
                         <div style="min-width:0;">
                             <div style="font-family:'Orbitron',sans-serif; font-size:.65rem; color:#ff4d6d; font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:.3rem; display:flex; align-items:center; gap:5px;">
@@ -144,7 +144,7 @@
                         <a href="{{ route('product.show',$item->product->slug) }}" style="flex-shrink:0; width:80px; height:80px; background:rgba(8,7,16,0.9); border:1px solid rgba(147,51,234,0.3); border-radius:8px; padding:6px; display:block;">
                             <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
                                  style="width:100%; height:100%; object-fit:contain;"
-                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                         </a>
                         <div style="flex:1; min-width:0;">
                             <div style="font-family:'Orbitron',sans-serif; font-size:.65rem; color:#ff4d6d; font-weight:800; text-transform:uppercase; letter-spacing:.08em; margin-bottom:.2rem;">{{ $item->product->category->name }}</div>

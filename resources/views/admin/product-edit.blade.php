@@ -136,7 +136,7 @@
                     <div style="position:relative;width:120px;height:100px;background:var(--adm-surface2);border:1px solid var(--adm-border);border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <img id="img-preview" src="{{ $product->image }}" alt="Preview"
                              style="max-width:100%;max-height:100%;object-fit:contain;"
-                             onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                             onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                     </div>
                     <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:.8rem;">
                         <div>

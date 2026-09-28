@@ -66,7 +66,7 @@
                                  title="{{ $item->product_name }} (Qty: {{ $item->quantity }})">
                                 @if($item->product && $item->product->image)
                                     <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}" style="width:100%; height:100%; object-fit:contain; padding:2px; transition:transform .2s;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'"
-                                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                         onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                                 @else
                                     <div style="font-size:1.1rem;">💻</div>
                                 @endif

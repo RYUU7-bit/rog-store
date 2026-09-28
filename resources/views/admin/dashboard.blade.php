@@ -381,7 +381,7 @@
                                          title="{{ $item->product_name }} (Qty: {{ $item->quantity }})">
                                         @if($item->product && $item->product->image)
                                             <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}" style="width:100%; height:100%; object-fit:contain; padding:2px; transition:transform .2s;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'"
-                                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                                         @else
                                             <div style="font-size:1.1rem;">💻</div>
                                         @endif
@@ -593,7 +593,7 @@
                             <img id="row-img-{{ $p->id }}" src="{{ $p->image }}" alt="{{ $p->name }}"
                                  style="width:100%; height:100%; object-fit:contain; padding:3px; transition:transform .2s;"
                                  onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"
-                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                         </div>
                     </td>
 
@@ -748,7 +748,7 @@
                                  title="{{ $item->product_name }} (Qty: {{ $item->quantity }})">
                                 @if($item->product && $item->product->image)
                                     <img src="{{ $item->product->image }}" alt="{{ $item->product_name }}" style="width:100%; height:100%; object-fit:contain; padding:2px; transition:transform .2s;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'"
-                                         onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                         onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                                 @else
                                     <div style="font-size:1.1rem;">💻</div>
                                 @endif
@@ -907,7 +907,7 @@
                 </div>
                 <div style="display:flex; gap:1.2rem; align-items:flex-start; flex-wrap:wrap;">
                     <div style="width:110px; height:90px; background:rgba(0,0,0,0.7); border:1.5px solid rgba(147,51,234,0.4); border-radius:8px; padding:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                        <img id="edit-img-preview" src="{{ asset('images/product-fallback.svg') }}" alt="Preview" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                        <img id="edit-img-preview" src="{{ asset('images/product-fallback.svg') }}" alt="Preview" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                     </div>
                     <div style="flex:1; min-width:240px; display:flex; flex-direction:column; gap:.7rem;">
                         <div>

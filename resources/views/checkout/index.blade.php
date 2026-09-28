@@ -145,7 +145,7 @@
                         <div style="display:flex; gap:.8rem; padding:.7rem 0; border-bottom:1px solid var(--border-divider); align-items:center;">
                             <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}"
                                  style="width:56px; height:48px; object-fit:contain; background:var(--bg-surface-2); padding:4px; border:1px solid var(--border-card); flex-shrink:0;"
-                                 onerror="this.src='{{ asset('images/product-fallback.svg') }}'">
+                                 onerror="this.onerror=null; this.src='/images/product-fallback.svg';">
                             <div style="flex:1; min-width:0;">
                                 <div style="font-size:.82rem; font-weight:700; color:var(--text-secondary); line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ $item->product->name }}</div>
                                 <div style="font-size:.75rem; color:var(--text-muted); margin-top:.15rem;">× {{ $item->quantity }}</div>
