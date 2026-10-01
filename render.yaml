@@ -10,13 +10,13 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: "true"
+        value: "false"
       - key: APP_KEY
         value: "base64:cjh0b296V1ZlMnhuTXRwbjR0UG9mY1VpdmNYeEVmRnc="
       - key: APP_URL
-        value: https://rog-store.onrender.com
+        sync: false
       - key: LOG_LEVEL
-        value: debug
+        value: error
       - key: SESSION_DRIVER
         value: file
       - key: SESSION_LIFETIME
