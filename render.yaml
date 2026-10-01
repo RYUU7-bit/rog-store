@@ -14,7 +14,7 @@ services:
       - key: APP_KEY
         value: "base64:cjh0b296V1ZlMnhuTXRwbjR0UG9mY1VpdmNYeEVmRnc="
       - key: APP_URL
-        sync: false
+        value: https://rog-store-1.onrender.com
       - key: LOG_LEVEL
         value: error
       - key: SESSION_DRIVER
